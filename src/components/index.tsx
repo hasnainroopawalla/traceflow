@@ -1,11 +1,11 @@
 import * as React from "react";
 
-type Props = {
-  value?: number;
+type IMyCounterProps = {
+  initialValue: number;
 };
 
-export const MyCounter = ({ value = 0 }: Props) => {
-  const [counter, setCounter] = React.useState(value);
+export const MyCounter: React.FC<IMyCounterProps> = () => {
+  const [counter, setCounter] = React.useState(33);
 
   const onMinus = () => {
     setCounter((prev) => prev - 1);
