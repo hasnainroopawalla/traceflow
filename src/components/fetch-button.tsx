@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useScenarioStore } from "../scenario-store";
-import { Scenario } from "../scenario";
+import { Scenario } from "../scenario/scenario";
 
 export const FetchButton: React.FC = () => {
   const scenarioStore = useScenarioStore();
 
   const fetch = React.useCallback(() => {
-    const fetchScenario = scenarioStore.newScenario();
+    const fetchScenario = scenarioStore.newScenario("fetchApi");
     fetchApi(fetchScenario);
   }, [scenarioStore]);
 
@@ -18,6 +18,8 @@ export const FetchButton: React.FC = () => {
 };
 
 const fetchApi = async (fetchScenario: Scenario) => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  fetchScenario.mark("fetch complete");
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  fetchScenario.mark("resolved");
+  fetchScenario.mark("applied");
 };

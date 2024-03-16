@@ -6,6 +6,7 @@ import { ScenarioStoreProvider } from "./scenario-store/scenario-store-context";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <ScenarioStoreProvider>
     <FetchButton />

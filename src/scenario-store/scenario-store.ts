@@ -15,11 +15,13 @@ export class ScenarioStore {
     return ScenarioStore.instance;
   }
 
-  public findScenario() {}
-
-  public newScenario() {
-    const scenario = new Scenario();
+  public newScenario(scenarioName: string) {
+    const scenario = new Scenario(scenarioName);
     this.scenarios.push(scenario);
     return scenario;
   }
+
+  public findScenarioByName() {}
+
+  public findScenarioById() {}
 }
