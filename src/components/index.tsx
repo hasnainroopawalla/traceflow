@@ -5,10 +5,11 @@ type IMyCounterProps = {
 };
 
 export const MyCounter: React.FC<IMyCounterProps> = () => {
-  const [counter, setCounter] = React.useState(33);
+  const [counter, setCounter] = React.useState(333);
 
   const onMinus = () => {
     setCounter((prev) => prev - 1);
+    console.log("HI");
   };
 
   const onPlus = () => {

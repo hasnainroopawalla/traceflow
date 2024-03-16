@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { MyCounter } from "./components";
 
+console.log("HII");
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
