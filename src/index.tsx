@@ -1,15 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { MyCounter } from "./components";
-
-console.log("HII");
+import { FetchButton } from "./components/fetch-button";
+import { ScenarioStoreProvider } from "./scenario-store/scenario-store-context";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <div>
-    <h2>Default counter</h2>
-    <MyCounter initialValue={8} />
-  </div>
+  <ScenarioStoreProvider>
+    <FetchButton />
+  </ScenarioStoreProvider>
 );
