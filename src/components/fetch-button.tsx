@@ -22,4 +22,6 @@ const fetchApi = async (fetchScenario: Scenario) => {
   fetchScenario.mark("fetch complete");
   await new Promise((resolve) => setTimeout(resolve, 1000));
   fetchScenario.mark("applied");
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  fetchScenario.stop();
 };

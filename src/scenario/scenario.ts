@@ -1,5 +1,5 @@
 import {
-  ScenarioStatus,
+  Status,
   type IScenarioData,
   type IScenarioStep,
 } from "./scenario.interface";
@@ -11,6 +11,7 @@ export class Scenario {
   public steps: IScenarioStep[];
   public data: IScenarioData;
   public sequence: number;
+  public isActive: boolean;
 
   private timer: Timer;
 
@@ -20,6 +21,7 @@ export class Scenario {
     this.steps = [];
     this.data = {};
     this.sequence = 1;
+    this.isActive = true;
     this.timer = new Timer();
     this.start();
   }
@@ -27,20 +29,26 @@ export class Scenario {
   public mark(step: string) {
     const newStep = {
       step,
-      status: ScenarioStatus.Success,
+      status: Status.Success,
       delta: 0,
       stepDelta: 0,
       sequence: this.sequence,
-      previousStep: this.steps[this.steps.length - 1]?.step || "",
+      previousStep: this.getCurrentStep(),
     };
-    console.log(newStep);
+    console.log(this.steps);
     this.steps.push(newStep);
     this.sequence += 1;
   }
 
-  public stop() {}
+  public stop() {
+    this.mark("stop");
+    this.isActive = false;
+  }
 
-  public fail() {}
+  public fail() {
+    this.mark("failure");
+    this.isActive = false;
+  }
 
   public pause() {}
 
@@ -50,7 +58,13 @@ export class Scenario {
     this.data = { ...this.data, scenarioData };
   }
 
+  public getCurrentStep() {
+    return this.steps.length > 0 ? this.steps[this.steps.length - 1].step : "";
+  }
+
   private start() {
     this.mark("start");
   }
+
+  private computeStepDelta() {}
 }

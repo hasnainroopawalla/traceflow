@@ -1,6 +1,6 @@
 export type IScenarioData = { [key: string]: unknown };
 
-export enum ScenarioStatus {
+export enum Status {
   Success = "success",
   Failure = "failure",
   Timeout = "timeout",
@@ -8,7 +8,7 @@ export enum ScenarioStatus {
 
 export type IScenarioStep = {
   step: string;
-  status: ScenarioStatus;
+  status: Status;
   delta: number;
   stepDelta: number;
   sequence: number;

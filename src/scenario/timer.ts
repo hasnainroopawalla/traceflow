@@ -1,3 +1,7 @@
 export class Timer {
-  constructor() {}
+  public startedAt: number;
+
+  constructor() {
+    this.startedAt = Date.now();
+  }
 }
