@@ -15,3 +15,13 @@ export type IScenarioStep = {
   sequence: number;
   previousStep?: string;
 };
+
+export type IScenario = {
+  id: string;
+  name: string;
+  stepCount: number;
+  steps: IScenarioStep[];
+  data: IScenarioData;
+  startedAt: number;
+  delta?: number;
+};

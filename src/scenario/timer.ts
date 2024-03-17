@@ -5,15 +5,15 @@ export class Timer {
     this.startedAt = Date.now();
   }
 
-  public elapsedTimeInMs(currentTimestamp: number) {
-    return currentTimestamp - this.startedAt;
-  }
-
-  public computeStepDelta(
+  public static computeStepDelta(
     currentTimestamp: number,
     previousStepTimestamp: number
   ) {
     return currentTimestamp - previousStepTimestamp;
+  }
+
+  public elapsedTimeInMs(currentTimestamp: number) {
+    return currentTimestamp - this.startedAt;
   }
 
   public now() {
@@ -26,7 +26,7 @@ export class Timer {
     const delta = this.elapsedTimeInMs(currentTimestamp);
 
     const stepDelta = previousStepTimestamp
-      ? this.computeStepDelta(currentTimestamp, previousStepTimestamp)
+      ? Timer.computeStepDelta(currentTimestamp, previousStepTimestamp)
       : 0;
 
     return {

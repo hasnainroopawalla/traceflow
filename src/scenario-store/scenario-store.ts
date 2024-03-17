@@ -23,5 +23,7 @@ export class ScenarioStore {
 
   public findScenarioByName() {}
 
-  public findScenarioById() {}
+  public findScenarioById(scenarioId: string): Scenario | undefined {
+    return this.scenarios.find((scenario) => scenario.id === scenarioId);
+  }
 }

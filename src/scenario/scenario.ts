@@ -2,6 +2,7 @@ import {
   Status,
   type IScenarioData,
   type IScenarioStep,
+  type IScenario,
 } from "./scenario.interface";
 import { Timer } from "./timer";
 
@@ -9,7 +10,7 @@ export class Scenario {
   public id: string;
   public name: string;
   public steps: IScenarioStep[];
-  public data: IScenarioData;
+  public scenarioData: IScenarioData;
   public sequence: number;
   public isActive: boolean;
 
@@ -19,11 +20,24 @@ export class Scenario {
     this.name = scenarioName;
     this.id = crypto.randomUUID();
     this.steps = [];
-    this.data = {};
+    this.scenarioData = {};
     this.sequence = 1;
     this.isActive = true;
     this.timer = new Timer();
     this.start();
+  }
+
+  public get info(): IScenario {
+    return {
+      id: this.id,
+      name: this.name,
+      stepCount: this.steps.length,
+      steps: this.steps,
+      data: this.scenarioData,
+      delta: this.currentStep?.delta,
+      startedAt: this.timer.startedAt,
+      // TODO: finishedAt
+    };
   }
 
   public get currentStep(): IScenarioStep | undefined {
@@ -64,7 +78,7 @@ export class Scenario {
   public resume() {}
 
   public addScenarioData(scenarioData: IScenarioData) {
-    this.data = { ...this.data, scenarioData };
+    this.scenarioData = { ...this.scenarioData, scenarioData };
   }
 
   private start() {
