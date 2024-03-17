@@ -26,16 +26,25 @@ export class Scenario {
     this.start();
   }
 
+  public get currentStep(): IScenarioStep | undefined {
+    return this.steps[this.steps.length - 1];
+  }
+
   public mark(step: string) {
+    const { timestamp, delta, stepDelta } = this.timer.computeStepTimestamps(
+      this.currentStep?.timestamp
+    );
+
     const newStep = {
       step,
       status: Status.Success,
-      delta: 0,
-      stepDelta: 0,
+      timestamp,
+      delta,
+      stepDelta,
       sequence: this.sequence,
-      previousStep: this.getCurrentStep(),
+      previousStep: this.currentStep?.step,
     };
-    console.log(this.steps);
+    console.log(newStep);
     this.steps.push(newStep);
     this.sequence += 1;
   }
@@ -58,13 +67,7 @@ export class Scenario {
     this.data = { ...this.data, scenarioData };
   }
 
-  public getCurrentStep() {
-    return this.steps.length > 0 ? this.steps[this.steps.length - 1].step : "";
-  }
-
   private start() {
     this.mark("start");
   }
-
-  private computeStepDelta() {}
 }

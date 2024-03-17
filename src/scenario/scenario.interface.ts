@@ -9,8 +9,9 @@ export enum Status {
 export type IScenarioStep = {
   step: string;
   status: Status;
+  timestamp: number;
   delta: number;
   stepDelta: number;
   sequence: number;
-  previousStep: string;
+  previousStep?: string;
 };
