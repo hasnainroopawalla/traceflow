@@ -17,16 +17,29 @@ export const FetchButton: React.FC = () => {
   );
 };
 
-const delay = async (duration: number) =>
-  new Promise((resolve) => setTimeout(resolve, duration));
+const delay = async (duration: number) => {
+  console.log(`await ${duration}`);
+  return new Promise((resolve) => setTimeout(resolve, duration));
+};
 
 const fetchApi = async (fetchScenario: Scenario) => {
   await delay(500);
-  fetchScenario.mark("fetch complete");
+  fetchScenario.mark("fetch_complete");
+  await delay(700);
+  fetchScenario.pause();
   await delay(1000);
-  // fetchScenario.pause();
-  // await delay(700);
-  // fetchScenario.resume();
+  fetchScenario.resume();
+  await delay(200);
   fetchScenario.stop();
   console.log(fetchScenario.info);
 };
+
+// start -> 500 -> fetch_complete -> 700 -> pause -> 1000 -> resume -> 200 -> stop
+// total: 2400
+
+/*
+start || delta: 0, stepDelta: 0 
+fetch_complete || delta: 500, stepDelta: 500
+pause || delta: 1200, stepDelta: 1000
+stop || delta: 1400, stepDelta: 200
+*/

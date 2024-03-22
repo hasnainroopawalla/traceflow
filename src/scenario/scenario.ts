@@ -24,7 +24,7 @@ export class Scenario {
     this.scenarioData = {};
     this.sequence = 1;
     this.isActive = true;
-    this.timer = new Timer(this.timeout);
+    this.timer = new Timer(() => this.timeout());
     this.start();
   }
 
@@ -37,7 +37,7 @@ export class Scenario {
       data: this.scenarioData,
       delta: this.currentStep?.delta,
       startedAt: this.timer.startedAt,
-      // TODO: finishedAt
+      // TODO: finishedAt, status
     };
   }
 
@@ -46,9 +46,19 @@ export class Scenario {
   }
 
   public mark(step: string, status?: ScenarioStatus): void {
-    const { timestamp, delta, stepDelta } = this.timer.computeStepTimestamps(
-      this.currentStep?.timestamp
-    );
+    if (!this.isActive) {
+      return;
+    }
+
+    const { timestamp, delta, stepDelta } =
+      step === ScenarioStep.Pause
+        ? this.timer.pauseStepTemporalInfo()
+        : this.timer.genericStepTemporalInfo(
+            this.currentStep?.timestamp,
+            this.currentStep?.step === ScenarioStep.Pause
+              ? this.currentStep?.stepDelta
+              : 0
+          );
 
     const newStep: IScenarioStep = {
       step,
@@ -60,12 +70,15 @@ export class Scenario {
       previousStep: this.currentStep?.step,
     };
 
-    console.log(newStep);
+    console.log(
+      `-> ${newStep.step} || delta: ${newStep.delta}, stepDelta: ${newStep.stepDelta}, timestamp: ${newStep.timestamp}`
+    );
     this.steps.push(newStep);
     this.sequence += 1;
   }
 
   public stop(): void {
+    // console.log("SCENARIO stop");
     this.mark(ScenarioStep.Stop);
     this.cleanupOnTermination();
   }
@@ -77,10 +90,12 @@ export class Scenario {
 
   // TODO: add reason/context
   public pause(): void {
+    console.log("-> pause", Date.now());
     this.timer.pause();
   }
 
   public resume(): void {
+    // console.log("SCENARIO resume");
     this.mark(ScenarioStep.Pause);
     this.timer.resume();
   }
@@ -90,17 +105,19 @@ export class Scenario {
   }
 
   private cleanupOnTermination() {
-    console.log("cleanup");
+    // console.log("cleanup");
     this.isActive = false;
     this.timer.destroy();
   }
 
   private start(): void {
+    // console.log("SCENARIO start");
     this.mark(ScenarioStep.Start);
   }
 
   private timeout(): void {
-    // use enums for start, stop, timeout
+    // console.log("SCENARIO timeout");
     this.mark(ScenarioStep.Stop, ScenarioStatus.Timeout);
+    this.cleanupOnTermination();
   }
 }
