@@ -1,18 +1,22 @@
 import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
 import { sleep } from "../utils";
 
-export const singlePauseTimeout = {
-  name: "single-pause-timeout",
+export const doublePause = {
+  name: "double-pause",
   run: (scenario: Scenario) => {
-    sleep(400);
+    sleep(200);
     scenario.mark("step_1");
     sleep(700);
     scenario.pause();
     sleep(1000);
     scenario.resume();
-    sleep(4000);
+    sleep(300);
     scenario.mark("step_2");
     sleep(300);
+    scenario.pause();
+    sleep(4400);
+    scenario.resume();
+    sleep(800);
     scenario.stop();
   },
   expectedSteps: [
@@ -26,26 +30,42 @@ export const singlePauseTimeout = {
     },
     {
       step: "step_1",
-      delta: 400,
-      stepDelta: 400,
+      delta: 200,
+      stepDelta: 200,
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
     },
     {
       step: ScenarioStep.Pause,
-      delta: 1100,
+      delta: 900,
       stepDelta: 1000,
       sequence: 3,
       status: ScenarioStatus.Success,
       previousStep: "step_1",
     },
     {
-      step: ScenarioStep.Stop,
-      delta: 3000,
-      stepDelta: 1900,
+      step: "step_2",
+      delta: 1200,
+      stepDelta: 300,
       sequence: 4,
-      status: ScenarioStatus.Timeout,
+      status: ScenarioStatus.Success,
+      previousStep: "pause",
+    },
+    {
+      step: ScenarioStep.Pause,
+      delta: 1500,
+      stepDelta: 4400,
+      sequence: 5,
+      status: ScenarioStatus.Success,
+      previousStep: "step_2",
+    },
+    {
+      step: ScenarioStep.Stop,
+      delta: 2300,
+      stepDelta: 800,
+      sequence: 6,
+      status: ScenarioStatus.Success,
       previousStep: "pause",
     },
   ],
