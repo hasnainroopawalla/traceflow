@@ -27,9 +27,17 @@ const fetchApi = async (fetchScenario: Scenario) => {
   fetchScenario.mark("fetch_complete");
   await delay(700);
   fetchScenario.pause();
+  console.log("-- pause for 1000 --");
   await delay(1000);
   fetchScenario.resume();
   await delay(200);
+  fetchScenario.mark("click");
+  await delay(300);
+  fetchScenario.pause();
+  console.log("-- pause for 600 --");
+  await delay(600);
+  fetchScenario.resume();
+  await delay(100);
   fetchScenario.stop();
   console.log(fetchScenario.info);
 };

@@ -35,68 +35,87 @@ export class Scenario {
       stepCount: this.steps.length,
       steps: this.steps,
       data: this.scenarioData,
-      delta: this.currentStep?.delta,
+      delta: this.currentStep.delta,
       startedAt: this.timer.startedAt,
       // TODO: finishedAt, status
     };
   }
 
-  public get currentStep(): IScenarioStep | undefined {
+  public get currentStep(): IScenarioStep {
     return this.steps[this.steps.length - 1];
   }
 
   public mark(step: string, status?: ScenarioStatus): void {
     if (!this.isActive) {
+      console.log("INACTIVE");
       return;
+      // throw new Error("Scenario is not active");
     }
 
-    const { timestamp, delta, stepDelta } =
-      step === ScenarioStep.Pause
-        ? this.timer.pauseStepTemporalInfo()
-        : this.timer.genericStepTemporalInfo(
-            this.currentStep?.timestamp,
-            this.currentStep?.step === ScenarioStep.Pause
-              ? this.currentStep?.stepDelta
-              : 0
+    const { timestamp, stepDelta, delta } =
+      this.currentStep.step === ScenarioStep.Pause
+        ? this.timer.previousPause(this.currentStep.delta)
+        : this.timer.generateTemporalInfo(
+            this.currentStep.timestamp,
+            this.currentStep.delta
           );
 
-    const newStep: IScenarioStep = {
+    const newStep = this.buildNewStep({
       step,
-      status: status || ScenarioStatus.Success,
       timestamp,
       delta,
       stepDelta,
-      sequence: this.sequence,
-      previousStep: this.currentStep?.step,
-    };
+      status: status || ScenarioStatus.Success,
+    });
 
-    console.log(
-      `-> ${newStep.step} || delta: ${newStep.delta}, stepDelta: ${newStep.stepDelta}, timestamp: ${newStep.timestamp}`
-    );
-    this.steps.push(newStep);
-    this.sequence += 1;
+    this.addStepToScenario(newStep);
   }
 
   public stop(): void {
-    // console.log("SCENARIO stop");
+    if (!this.isActive) {
+      return;
+    }
     this.mark(ScenarioStep.Stop);
     this.cleanupOnTermination();
   }
 
   public fail(): void {
+    if (!this.isActive) {
+      return;
+    }
     this.mark(ScenarioStep.Stop, ScenarioStatus.Failure);
     this.cleanupOnTermination();
   }
 
   // TODO: add reason/context
   public pause(): void {
-    console.log("-> pause", Date.now());
-    this.timer.pause();
+    if (!this.isActive) {
+      return;
+    }
+    this.timer.pause(this.currentStep.delta);
   }
 
   public resume(): void {
+    if (!this.isActive) {
+      return;
+    }
     // console.log("SCENARIO resume");
-    this.mark(ScenarioStep.Pause);
+    // this.mark(ScenarioStep.Pause);
+    const { timestamp, stepDelta, delta } = this.timer.generatePauseStepInfo(
+      this.currentStep.timestamp,
+      this.currentStep.delta
+    );
+
+    const startStep = this.buildNewStep({
+      step: ScenarioStep.Pause,
+      timestamp,
+      delta,
+      stepDelta,
+      status: ScenarioStatus.Success,
+    });
+
+    this.addStepToScenario(startStep);
+
     this.timer.resume();
   }
 
@@ -104,19 +123,51 @@ export class Scenario {
     this.scenarioData = { ...this.scenarioData, scenarioData };
   }
 
+  private buildNewStep(
+    props: Pick<
+      IScenarioStep,
+      "step" | "status" | "timestamp" | "delta" | "stepDelta"
+    >
+  ): IScenarioStep {
+    return {
+      step: props.step,
+      status: props.status,
+      timestamp: props.timestamp,
+      delta: props.delta,
+      stepDelta: props.stepDelta,
+      sequence: this.sequence,
+      previousStep: this.sequence > 1 ? this.currentStep.step : undefined,
+    };
+  }
+
+  private addStepToScenario(scenarioStep: IScenarioStep) {
+    console.log(
+      `-> ${scenarioStep.step} || delta: ${scenarioStep.delta}, stepDelta: ${scenarioStep.stepDelta}, timestamp: ${scenarioStep.timestamp}`
+    );
+    this.steps.push(scenarioStep);
+    this.sequence += 1;
+  }
+
   private cleanupOnTermination() {
-    // console.log("cleanup");
     this.isActive = false;
     this.timer.destroy();
+    console.log("CLEANED UP");
   }
 
   private start(): void {
-    // console.log("SCENARIO start");
-    this.mark(ScenarioStep.Start);
+    const startStep = this.buildNewStep({
+      step: ScenarioStep.Start,
+      timestamp: this.timer.now(),
+      delta: 0,
+      stepDelta: 0,
+      status: ScenarioStatus.Success,
+    });
+
+    this.addStepToScenario(startStep);
   }
 
   private timeout(): void {
-    // console.log("SCENARIO timeout");
+    console.log("SCENARIO timeout");
     this.mark(ScenarioStep.Stop, ScenarioStatus.Timeout);
     this.cleanupOnTermination();
   }

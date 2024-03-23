@@ -1,34 +1,26 @@
+import type {
+  IPauseHistory,
+  // ITimerState,
+  ITimestampInfo,
+} from "./timer.interface";
+
 const TIMEOUT_MS = 3000;
-
-type IPauseInfo =
-  | {
-      isPaused: true;
-      pausedAt: number;
-      remainingTime: number;
-    }
-  | { isPaused: false; lastResumedAt: number };
-
-// TODO: rename
-type ITimestampInfo = {
-  timestamp: number;
-  delta: number;
-  stepDelta: number;
-};
 
 export class Timer {
   public startedAt: number;
   private timerId: NodeJS.Timeout;
   private onTimeout: () => void;
-  private pauseInfo: IPauseInfo;
+  private pauseHistory: IPauseHistory[];
 
   constructor(onTimeout: () => void) {
+    this.pauseHistory = [];
     this.startedAt = this.now();
     this.onTimeout = onTimeout;
-    this.pauseInfo = {
-      isPaused: false,
-      lastResumedAt: this.startedAt,
-    };
     this.startTimer(TIMEOUT_MS);
+  }
+
+  public get isPaused() {
+    return this.getLatestPauseInfo().resumedAt === undefined;
   }
 
   public static computeStepDelta(
@@ -42,24 +34,26 @@ export class Timer {
     return fromTimestamp - this.startedAt;
   }
 
-  // TODO: consider renaming and making previousStepTimestamp a mandatory arg
-  public genericStepTemporalInfo(
-    previousStepTimestamp?: number,
-    previousStepPauseStepDelta = 0
-  ): ITimestampInfo {
+  public previousPause(previousDelta: number) {
     const currentTimestamp = this.now();
 
-    const delta =
-      this.elapsedTimeInMs(currentTimestamp) - previousStepPauseStepDelta;
+    const latestPauseInfo = this.getLatestPauseInfo();
 
-    const stepDelta = previousStepTimestamp
-      ? Timer.computeStepDelta(
-          currentTimestamp,
-          previousStepPauseStepDelta
-            ? this.pauseInfo.lastResumedAt
-            : previousStepTimestamp
-        )
-      : 0;
+    if (!latestPauseInfo.resumedAt) {
+      throw new Error();
+    }
+
+    const stepDelta = currentTimestamp - latestPauseInfo.resumedAt;
+
+    console.log(
+      "previousPause",
+      currentTimestamp,
+      this.startedAt,
+      latestPauseInfo.duration
+    );
+
+    const delta = stepDelta + previousDelta;
+    // const delta = currentTimestamp - this.startedAt - latestPauseInfo.duration;
 
     return {
       timestamp: currentTimestamp,
@@ -68,49 +62,74 @@ export class Timer {
     };
   }
 
-  public pauseStepTemporalInfo(): ITimestampInfo {
-    if (!this.pauseInfo.isPaused) {
-      return;
+  // consider renaming and making previousStepTimestamp a mandatory arg
+  public generateTemporalInfo(
+    previousStepTimestamp: number,
+    previousDelta: number
+  ): ITimestampInfo {
+    const currentTimestamp = this.now();
+
+    const stepDelta = currentTimestamp - previousStepTimestamp;
+
+    const delta = stepDelta + previousDelta;
+
+    return {
+      timestamp: currentTimestamp,
+      delta,
+      stepDelta,
+    };
+  }
+
+  public generatePauseStepInfo(
+    previousStepTimestamp: number,
+    previousDelta: number
+  ): ITimestampInfo {
+    if (!this.isPaused) {
+      throw new Error("Not paused");
     }
 
     const currentTimestamp = this.now();
+    const ongoingPauseInfo = this.getLatestPauseInfo();
 
-    const pauseDuration = Timer.computeStepDelta(
-      currentTimestamp,
-      this.pauseInfo.pausedAt
-    );
+    const pauseDuration = currentTimestamp - ongoingPauseInfo.pausedAt;
 
-    const delta = this.elapsedTimeInMs(currentTimestamp) - pauseDuration;
+    const delta =
+      previousDelta + ongoingPauseInfo.pausedAt - previousStepTimestamp;
 
     return {
-      timestamp: this.pauseInfo.pausedAt,
+      timestamp: ongoingPauseInfo.pausedAt,
       stepDelta: pauseDuration,
       delta,
     };
   }
 
-  public pause(): void {
+  public pause(previousDelta: number): void {
     // console.log("TIMER pause", this.timerId);
     const pausedAt = this.now();
 
     this.stopTimer();
-    const remainingTime = TIMEOUT_MS - this.elapsedTimeInMs(pausedAt);
 
-    this.pauseInfo = {
-      isPaused: true,
+    const remainingTime = TIMEOUT_MS - previousDelta;
+    console.log(remainingTime);
+    this.pauseHistory.push({
       pausedAt,
       remainingTime,
-    };
+    });
   }
 
   public resume(): void {
     // console.log("TIMER resume", this.timerId);
-    if (!this.pauseInfo.isPaused) {
+    if (!this.isPaused) {
       return;
     }
-    console.log("resume", TIMEOUT_MS, this.pauseInfo.pausedAt);
-    this.startTimer(this.pauseInfo.remainingTime);
-    this.pauseInfo = { isPaused: false, lastResumedAt: this.now() };
+
+    const ongoingPauseInfo = this.getLatestPauseInfo();
+
+    this.startTimer(ongoingPauseInfo.remainingTime);
+
+    ongoingPauseInfo.resumedAt = this.now();
+    ongoingPauseInfo.duration = this.now() - ongoingPauseInfo.pausedAt;
+    // this.state = { isPaused: false };
   }
 
   public destroy() {
@@ -118,18 +137,21 @@ export class Timer {
     this.stopTimer();
   }
 
-  private now() {
+  public now() {
     return Date.now();
   }
 
   private startTimer(duration: number) {
-    console.log("duration", duration);
     this.timerId = setTimeout(() => this.onTimeout(), duration);
-    // console.log("TIMER startTimer", this.timerId, duration);
+    console.log("TIMER startTimer", this.timerId, duration);
   }
 
   private stopTimer() {
-    // console.log("TIMER stopTimer", this.timerId);
+    console.log("TIMER stopTimer", this.timerId);
     clearTimeout(this.timerId);
+  }
+
+  private getLatestPauseInfo(): IPauseHistory {
+    return this.pauseHistory[this.pauseHistory.length - 1];
   }
 }
