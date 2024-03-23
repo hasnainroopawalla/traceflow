@@ -10,6 +10,7 @@
     "prepare": "yarn build",
     "prepublishOnly": "yarn test && yarn lint",
     "test": "jest --config jestconfig.json",
+    "test:watch": "jest --config jestconfig.json --watch",
     "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\""
   },
   "files": [

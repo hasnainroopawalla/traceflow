@@ -15,8 +15,8 @@ export class ScenarioStore {
     return ScenarioStore.instance;
   }
 
-  public newScenario(scenarioName: string) {
-    const scenario = new Scenario(scenarioName);
+  public newScenario(scenarioName: string, timeoutInMs: number) {
+    const scenario = new Scenario(scenarioName, timeoutInMs);
     this.scenarios.push(scenario);
     return scenario;
   }

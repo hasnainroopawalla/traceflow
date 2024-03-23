@@ -1,22 +1,18 @@
-import type {
-  IPauseHistory,
-  // ITimerState,
-  ITimestampInfo,
-} from "./timer.interface";
-
-const TIMEOUT_MS = 3000;
+import type { IPauseHistory, ITimestampInfo } from "./timer.interface";
 
 export class Timer {
   public startedAt: number;
   private timerId: NodeJS.Timeout;
   private onTimeout: () => void;
+  private timeoutInMs: number;
   private pauseHistory: IPauseHistory[];
 
-  constructor(onTimeout: () => void) {
-    this.pauseHistory = [];
+  constructor(onTimeout: () => void, timeoutInMs: number) {
+    this.pauseHistory = []; // TODO: might not be needed
+    this.timeoutInMs = timeoutInMs;
     this.startedAt = this.now();
     this.onTimeout = onTimeout;
-    this.startTimer(TIMEOUT_MS);
+    this.startTimer(timeoutInMs);
   }
 
   public get isPaused() {
@@ -109,8 +105,7 @@ export class Timer {
 
     this.stopTimer();
 
-    const remainingTime = TIMEOUT_MS - previousDelta;
-    console.log(remainingTime);
+    const remainingTime = this.timeoutInMs - previousDelta;
     this.pauseHistory.push({
       pausedAt,
       remainingTime,
@@ -143,11 +138,11 @@ export class Timer {
 
   private startTimer(duration: number) {
     this.timerId = setTimeout(() => this.onTimeout(), duration);
-    console.log("TIMER startTimer", this.timerId, duration);
+    // console.log("TIMER startTimer", this.timerId, duration);
   }
 
   private stopTimer() {
-    console.log("TIMER stopTimer", this.timerId);
+    // console.log("TIMER stopTimer", this.timerId);
     clearTimeout(this.timerId);
   }
 

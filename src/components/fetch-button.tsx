@@ -6,7 +6,7 @@ export const FetchButton: React.FC = () => {
   const scenarioStore = useScenarioStore();
 
   const fetch = React.useCallback(() => {
-    const fetchScenario = scenarioStore.newScenario("fetchApi");
+    const fetchScenario = scenarioStore.newScenario("fetchApi", 3000);
     fetchApi(fetchScenario);
   }, [scenarioStore]);
 

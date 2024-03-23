@@ -17,14 +17,14 @@ export class Scenario {
 
   private timer: Timer;
 
-  constructor(scenarioName: string) {
+  constructor(scenarioName: string, timeoutInMs: number) {
     this.name = scenarioName;
     this.id = crypto.randomUUID();
     this.steps = [];
     this.scenarioData = {};
     this.sequence = 1;
     this.isActive = true;
-    this.timer = new Timer(() => this.timeout());
+    this.timer = new Timer(() => this.timeout(), timeoutInMs);
     this.start();
   }
 
@@ -47,7 +47,7 @@ export class Scenario {
 
   public mark(step: string, status?: ScenarioStatus): void {
     if (!this.isActive) {
-      console.log("INACTIVE");
+      // console.log("INACTIVE");
       return;
       // throw new Error("Scenario is not active");
     }
@@ -141,9 +141,9 @@ export class Scenario {
   }
 
   private addStepToScenario(scenarioStep: IScenarioStep) {
-    console.log(
-      `-> ${scenarioStep.step} || delta: ${scenarioStep.delta}, stepDelta: ${scenarioStep.stepDelta}, timestamp: ${scenarioStep.timestamp}`
-    );
+    // console.log(
+    //   `-> ${scenarioStep.step} || delta: ${scenarioStep.delta}, stepDelta: ${scenarioStep.stepDelta}, timestamp: ${scenarioStep.timestamp}`
+    // );
     this.steps.push(scenarioStep);
     this.sequence += 1;
   }
@@ -151,7 +151,7 @@ export class Scenario {
   private cleanupOnTermination() {
     this.isActive = false;
     this.timer.destroy();
-    console.log("CLEANED UP");
+    // console.log("CLEANED UP");
   }
 
   private start(): void {
@@ -167,7 +167,7 @@ export class Scenario {
   }
 
   private timeout(): void {
-    console.log("SCENARIO timeout");
+    // console.log("SCENARIO timeout");
     this.mark(ScenarioStep.Stop, ScenarioStatus.Timeout);
     this.cleanupOnTermination();
   }
