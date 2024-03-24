@@ -1,22 +1,24 @@
 import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
 import { sleep } from "../utils";
 
-export const doublePause = {
-  name: "double-pause",
+export const singlePauseRepeated = {
+  name: "single-pause-repeated",
   run: (scenario: Scenario) => {
-    sleep(200);
+    sleep(400);
     scenario.mark("step_1");
+    scenario.resume();
     sleep(700);
+    scenario.pause();
+    scenario.pause();
+    scenario.pause();
     scenario.pause();
     sleep(1000);
     scenario.resume();
+    scenario.resume();
+    scenario.resume();
     sleep(300);
     scenario.mark("step_2");
-    sleep(500);
-    scenario.pause();
-    sleep(5500);
-    scenario.resume();
-    sleep(800);
+    sleep(200);
     scenario.stop();
   },
   expectedSteps: [
@@ -30,15 +32,15 @@ export const doublePause = {
     },
     {
       step: "step_1",
-      delta: 200,
-      stepDelta: 200,
+      delta: 400,
+      stepDelta: 400,
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
     },
     {
       step: ScenarioStep.Pause,
-      delta: 900,
+      delta: 1100,
       stepDelta: 1000,
       sequence: 3,
       status: ScenarioStatus.Success,
@@ -46,27 +48,19 @@ export const doublePause = {
     },
     {
       step: "step_2",
-      delta: 1200,
+      delta: 1400,
       stepDelta: 300,
       sequence: 4,
       status: ScenarioStatus.Success,
       previousStep: "pause",
     },
     {
-      step: ScenarioStep.Pause,
-      delta: 1700,
-      stepDelta: 5500,
+      step: ScenarioStep.Stop,
+      delta: 1600,
+      stepDelta: 200,
       sequence: 5,
       status: ScenarioStatus.Success,
       previousStep: "step_2",
-    },
-    {
-      step: ScenarioStep.Stop,
-      delta: 2500,
-      stepDelta: 800,
-      sequence: 6,
-      status: ScenarioStatus.Success,
-      previousStep: "pause",
     },
   ],
 };

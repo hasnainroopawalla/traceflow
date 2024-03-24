@@ -43,9 +43,9 @@ export class Timer {
 
     console.log(
       "previousPause",
+      previousDelta,
       currentTimestamp,
-      this.startedAt,
-      latestPauseInfo.duration
+      latestPauseInfo.resumedAt
     );
 
     const delta = stepDelta + previousDelta;
@@ -99,13 +99,21 @@ export class Timer {
     };
   }
 
-  public pause(previousDelta: number): void {
-    // console.log("TIMER pause", this.timerId);
+  public pause(previousStepTimestamp: number, previousStepDelta: number): void {
     const pausedAt = this.now();
 
     this.stopTimer();
 
-    const remainingTime = this.timeoutInMs - previousDelta;
+    const remainingTime =
+      this.timeoutInMs -
+      (previousStepDelta + (pausedAt - previousStepTimestamp));
+    console.log(
+      "TIMER pause",
+      pausedAt,
+      previousStepTimestamp,
+      this.timeoutInMs - (pausedAt - previousStepTimestamp)
+    );
+
     this.pauseHistory.push({
       pausedAt,
       remainingTime,
@@ -113,12 +121,13 @@ export class Timer {
   }
 
   public resume(): void {
-    // console.log("TIMER resume", this.timerId);
     if (!this.isPaused) {
       return;
     }
 
     const ongoingPauseInfo = this.getLatestPauseInfo();
+
+    console.log("TIMER resume", ongoingPauseInfo.remainingTime);
 
     this.startTimer(ongoingPauseInfo.remainingTime);
 
@@ -138,11 +147,10 @@ export class Timer {
 
   private startTimer(duration: number) {
     this.timerId = setTimeout(() => this.onTimeout(), duration);
-    // console.log("TIMER startTimer", this.timerId, duration);
+    console.log("TIMER startTimer", duration);
   }
 
   private stopTimer() {
-    // console.log("TIMER stopTimer", this.timerId);
     clearTimeout(this.timerId);
   }
 

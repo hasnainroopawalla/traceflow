@@ -3,8 +3,11 @@ import { basic } from "./basic";
 import { singlePause } from "./single-pause";
 import { earlyTimeout } from "./early-timeout";
 import { timeoutBeforeStop } from "./timeout-before-stop";
-// import { singlePauseTimeout } from "./single-pause-timeout";
+import { singlePauseTimeout } from "./single-pause-timeout";
 import { doublePause } from "./double-pause";
+import { doublePauseTimeout } from "./double-pause-timeout";
+import { immediateTimeout } from "./immediate-timeout";
+// import { singlePauseRepeated } from "./single-pause-repeated";
 
 type IScenarioPreset = {
   name: string;
@@ -17,6 +20,9 @@ export const scenarioPresets: IScenarioPreset[] = [
   timeoutBeforeStop,
   earlyTimeout,
   singlePause,
-  // singlePauseTimeout,
+  singlePauseTimeout,
   doublePause,
+  doublePauseTimeout,
+  immediateTimeout,
+  // singlePauseRepeated,
 ];

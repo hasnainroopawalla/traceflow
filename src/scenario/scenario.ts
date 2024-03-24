@@ -92,7 +92,7 @@ export class Scenario {
     if (!this.isActive) {
       return;
     }
-    this.timer.pause(this.currentStep.delta);
+    this.timer.pause(this.currentStep.timestamp, this.currentStep.delta);
   }
 
   public resume(): void {
@@ -141,9 +141,9 @@ export class Scenario {
   }
 
   private addStepToScenario(scenarioStep: IScenarioStep) {
-    // console.log(
-    //   `-> ${scenarioStep.step} || delta: ${scenarioStep.delta}, stepDelta: ${scenarioStep.stepDelta}, timestamp: ${scenarioStep.timestamp}`
-    // );
+    console.log(
+      `-> ${scenarioStep.step} || delta: ${scenarioStep.delta}, stepDelta: ${scenarioStep.stepDelta}, timestamp: ${scenarioStep.timestamp}`
+    );
     this.steps.push(scenarioStep);
     this.sequence += 1;
   }
@@ -167,7 +167,7 @@ export class Scenario {
   }
 
   private timeout(): void {
-    // console.log("SCENARIO timeout");
+    console.log("SCENARIO timeout");
     this.mark(ScenarioStep.Stop, ScenarioStatus.Timeout);
     this.cleanupOnTermination();
   }
