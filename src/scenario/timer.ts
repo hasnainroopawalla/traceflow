@@ -1,22 +1,19 @@
-import type { IPauseHistory, ITimestampInfo } from "./timer.interface";
+import type { IPauseInfo, ITemporalInfo } from "./timer.interface";
 
 export class Timer {
   public startedAt: number;
   private timerId: NodeJS.Timeout;
   private onTimeout: () => void;
   private timeoutInMs: number;
-  private pauseHistory: IPauseHistory[];
+
+  private pauseInfo: IPauseInfo;
 
   constructor(onTimeout: () => void, timeoutInMs: number) {
-    this.pauseHistory = []; // TODO: might not be needed
     this.timeoutInMs = timeoutInMs;
     this.startedAt = this.now();
     this.onTimeout = onTimeout;
+    this.pauseInfo = { isPaused: false, lastResumedAt: this.startedAt };
     this.startTimer(timeoutInMs);
-  }
-
-  public get isPaused() {
-    return this.getLatestPauseInfo().resumedAt === undefined;
   }
 
   public static computeStepDelta(
@@ -33,23 +30,20 @@ export class Timer {
   public previousPause(previousDelta: number) {
     const currentTimestamp = this.now();
 
-    const latestPauseInfo = this.getLatestPauseInfo();
-
-    if (!latestPauseInfo.resumedAt) {
-      throw new Error();
+    if (this.pauseInfo.isPaused) {
+      throw new Error("Previous step pause");
     }
 
-    const stepDelta = currentTimestamp - latestPauseInfo.resumedAt;
+    const stepDelta = currentTimestamp - this.pauseInfo.lastResumedAt;
 
     console.log(
       "previousPause",
       previousDelta,
       currentTimestamp,
-      latestPauseInfo.resumedAt
+      this.pauseInfo.lastResumedAt
     );
 
     const delta = stepDelta + previousDelta;
-    // const delta = currentTimestamp - this.startedAt - latestPauseInfo.duration;
 
     return {
       timestamp: currentTimestamp,
@@ -62,7 +56,7 @@ export class Timer {
   public generateTemporalInfo(
     previousStepTimestamp: number,
     previousDelta: number
-  ): ITimestampInfo {
+  ): ITemporalInfo {
     const currentTimestamp = this.now();
 
     const stepDelta = currentTimestamp - previousStepTimestamp;
@@ -79,21 +73,21 @@ export class Timer {
   public generatePauseStepInfo(
     previousStepTimestamp: number,
     previousDelta: number
-  ): ITimestampInfo {
-    if (!this.isPaused) {
+  ): ITemporalInfo {
+    if (!this.pauseInfo.isPaused) {
       throw new Error("Not paused");
     }
 
     const currentTimestamp = this.now();
-    const ongoingPauseInfo = this.getLatestPauseInfo();
+    // const ongoingPauseInfo = this.getLatestPauseInfo();
 
-    const pauseDuration = currentTimestamp - ongoingPauseInfo.pausedAt;
+    const pauseDuration = currentTimestamp - this.pauseInfo.pausedAt;
 
     const delta =
-      previousDelta + ongoingPauseInfo.pausedAt - previousStepTimestamp;
+      previousDelta + this.pauseInfo.pausedAt - previousStepTimestamp;
 
     return {
-      timestamp: ongoingPauseInfo.pausedAt,
+      timestamp: this.pauseInfo.pausedAt,
       stepDelta: pauseDuration,
       delta,
     };
@@ -114,30 +108,29 @@ export class Timer {
       this.timeoutInMs - (pausedAt - previousStepTimestamp)
     );
 
-    this.pauseHistory.push({
+    this.pauseInfo = {
+      isPaused: true,
       pausedAt,
       remainingTime,
-    });
+    };
   }
 
   public resume(): void {
-    if (!this.isPaused) {
+    if (!this.pauseInfo.isPaused) {
       return;
     }
 
-    const ongoingPauseInfo = this.getLatestPauseInfo();
+    console.log("TIMER resume", this.pauseInfo.remainingTime);
 
-    console.log("TIMER resume", ongoingPauseInfo.remainingTime);
+    this.startTimer(this.pauseInfo.remainingTime);
 
-    this.startTimer(ongoingPauseInfo.remainingTime);
-
-    ongoingPauseInfo.resumedAt = this.now();
-    ongoingPauseInfo.duration = this.now() - ongoingPauseInfo.pausedAt;
-    // this.state = { isPaused: false };
+    this.pauseInfo = {
+      isPaused: false,
+      lastResumedAt: this.now(),
+    };
   }
 
   public destroy() {
-    // console.log("TIMER destroy");
     this.stopTimer();
   }
 
@@ -152,9 +145,5 @@ export class Timer {
 
   private stopTimer() {
     clearTimeout(this.timerId);
-  }
-
-  private getLatestPauseInfo(): IPauseHistory {
-    return this.pauseHistory[this.pauseHistory.length - 1];
   }
 }

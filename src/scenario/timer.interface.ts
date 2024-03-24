@@ -6,18 +6,10 @@ export type IPauseInfo =
     }
   | { isPaused: false; lastResumedAt: number };
 
-// TODO: rename
-export type ITimestampInfo = {
+export type ITemporalInfo = {
   timestamp: number;
   delta: number;
   stepDelta: number;
-};
-
-export type IPauseHistory = {
-  pausedAt: number;
-  remainingTime: number;
-  duration?: number;
-  resumedAt?: number;
 };
 
 export type ITimerState = {
