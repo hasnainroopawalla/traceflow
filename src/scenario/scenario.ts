@@ -47,28 +47,21 @@ export class Scenario {
 
   public mark(step: string, status?: ScenarioStatus): void {
     if (!this.isActive) {
-      // console.log("INACTIVE");
       return;
       // throw new Error("Scenario is not active");
     }
 
-    const { timestamp, stepDelta, delta } =
-      this.currentStep.step === ScenarioStep.Pause
-        ? this.timer.previousPause(this.currentStep.delta)
-        : this.timer.generateTemporalInfo(
-            this.currentStep.timestamp,
-            this.currentStep.delta
-          );
+    const { timestamp, stepDelta, delta } = this.timer.mark(
+      step === ScenarioStep.Pause
+    );
 
-    const newStep = this.buildNewStep({
+    this.createNewStep({
       step,
       timestamp,
       delta,
       stepDelta,
       status: status || ScenarioStatus.Success,
     });
-
-    this.addStepToScenario(newStep);
   }
 
   public stop(): void {
@@ -92,30 +85,14 @@ export class Scenario {
     if (!this.isActive) {
       return;
     }
-    this.timer.pause(this.currentStep.timestamp, this.currentStep.delta);
+    this.timer.pause();
   }
 
   public resume(): void {
     if (!this.isActive) {
       return;
     }
-    // console.log("SCENARIO resume");
-    // this.mark(ScenarioStep.Pause);
-    const { timestamp, stepDelta, delta } = this.timer.generatePauseStepInfo(
-      this.currentStep.timestamp,
-      this.currentStep.delta
-    );
-
-    const startStep = this.buildNewStep({
-      step: ScenarioStep.Pause,
-      timestamp,
-      delta,
-      stepDelta,
-      status: ScenarioStatus.Success,
-    });
-
-    this.addStepToScenario(startStep);
-
+    this.mark(ScenarioStep.Pause);
     this.timer.resume();
   }
 
@@ -123,21 +100,18 @@ export class Scenario {
     this.scenarioData = { ...this.scenarioData, scenarioData };
   }
 
-  private buildNewStep(
+  private createNewStep(
     props: Pick<
       IScenarioStep,
       "step" | "status" | "timestamp" | "delta" | "stepDelta"
     >
-  ): IScenarioStep {
-    return {
-      step: props.step,
-      status: props.status,
-      timestamp: props.timestamp,
-      delta: props.delta,
-      stepDelta: props.stepDelta,
+  ) {
+    const step = {
+      ...props,
       sequence: this.sequence,
       previousStep: this.sequence > 1 ? this.currentStep.step : undefined,
     };
+    this.addStepToScenario(step);
   }
 
   private addStepToScenario(scenarioStep: IScenarioStep) {
@@ -151,23 +125,19 @@ export class Scenario {
   private cleanupOnTermination() {
     this.isActive = false;
     this.timer.destroy();
-    // console.log("CLEANED UP");
   }
 
   private start(): void {
-    const startStep = this.buildNewStep({
+    this.createNewStep({
       step: ScenarioStep.Start,
-      timestamp: this.timer.now(),
+      timestamp: Date.now(),
       delta: 0,
       stepDelta: 0,
       status: ScenarioStatus.Success,
     });
-
-    this.addStepToScenario(startStep);
   }
 
   private timeout(): void {
-    console.log("SCENARIO timeout");
     this.mark(ScenarioStep.Stop, ScenarioStatus.Timeout);
     this.cleanupOnTermination();
   }

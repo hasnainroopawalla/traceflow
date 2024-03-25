@@ -1,6 +1,6 @@
 import { ScenarioStore } from "../src/scenario-store";
 import { scenarioPresets } from "./scenario-presets/presets";
-import { validateScenarioSteps } from "./utils";
+import { validateScenarioSteps } from "./test-utils";
 
 Object.defineProperty(globalThis, "crypto", {
   value: {

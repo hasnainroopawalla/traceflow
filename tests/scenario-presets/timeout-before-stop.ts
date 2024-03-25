@@ -1,5 +1,5 @@
 import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
-import { sleep } from "../utils";
+import { sleep } from "../test-utils";
 
 export const timeoutBeforeStop = {
   name: "basic-timeout",
