@@ -1,4 +1,3 @@
-import { ifActive, terminalStep } from "./decorators";
 import {
   type IScenarioData,
   type IScenarioStep,
@@ -46,20 +45,26 @@ export class Scenario {
     return this.steps[this.steps.length - 1];
   }
 
-  @ifActive
-  @terminalStep
   public stop(): void {
+    if (!this.isActive) {
+      return;
+    }
     this.mark(ScenarioStep.Stop);
+    this.terminate();
   }
 
-  @ifActive
-  @terminalStep
   public fail(): void {
+    if (!this.isActive) {
+      return;
+    }
     this.mark(ScenarioStep.Stop, ScenarioStatus.Failure);
+    this.terminate();
   }
 
-  @ifActive
   public mark(step: string, status?: ScenarioStatus): void {
+    if (!this.isActive) {
+      return;
+    }
     const { timestamp, stepDelta, delta } = this.timer.mark(
       step === ScenarioStep.Pause
     );
@@ -74,31 +79,36 @@ export class Scenario {
   }
 
   // TODO: add reason/context
-  @ifActive
   public pause(): void {
+    if (!this.isActive) {
+      return;
+    }
     this.timer.pause();
   }
 
-  @ifActive
   public resume(): void {
+    if (!this.isActive) {
+      return;
+    }
     this.mark(ScenarioStep.Pause);
     this.timer.resume();
   }
 
-  @ifActive
   public addScenarioData(scenarioData: IScenarioData): void {
+    if (!this.isActive) {
+      return;
+    }
     this.scenarioData = { ...this.scenarioData, scenarioData };
   }
 
-  @ifActive
-  @terminalStep
-  private timeout(): void {
-    this.mark(ScenarioStep.Stop, ScenarioStatus.Timeout);
-  }
-
-  public cleanupOnTermination() {
+  public terminate() {
     this.isActive = false;
     this.timer.destroy();
+  }
+
+  private timeout(): void {
+    this.mark(ScenarioStep.Stop, ScenarioStatus.Timeout);
+    this.terminate();
   }
 
   private createNewStep(
