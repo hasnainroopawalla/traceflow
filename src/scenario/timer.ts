@@ -24,8 +24,8 @@ export class Timer {
     this.startTimer(timeoutInMs);
   }
 
-  public mark(isPauseStep = false) {
-    const marker = this.computeDeltas(isPauseStep);
+  public mark(isResumeStep = false) {
+    const marker = this.computeDeltas(isResumeStep);
     this.markers.push(marker);
     return marker;
   }
@@ -64,18 +64,18 @@ export class Timer {
     clearTimeout(this.timerId);
   }
 
-  private computeDeltas(isPauseStep = false) {
+  private computeDeltas(isResumeStep = false) {
     const { delta: prevDelta, timestamp: prevTimestamp } =
       this.markers[this.markers.length - 1];
 
-    const now = isPauseStep ? this.pauser.pausedAt() : Date.now();
+    const now = isResumeStep ? this.pauser.pausedAt() : Date.now();
     const stepDelta = now - prevTimestamp;
     const delta = prevDelta + stepDelta;
 
     return {
       timestamp: now,
-      stepDelta: isPauseStep ? this.pauser.pauseDuration() : stepDelta,
       delta,
+      stepDelta: isResumeStep ? this.pauser.pauseDuration() : stepDelta,
     };
   }
 }

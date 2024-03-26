@@ -27,11 +27,9 @@ export class Pauser {
   }
 
   public pause() {
-    const pausedAt = Date.now();
-
     this.pauseInfo = {
       isPaused: true,
-      pausedAt,
+      pausedAt: Date.now(),
     };
   }
 
