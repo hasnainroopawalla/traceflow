@@ -1,15 +1,15 @@
 import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
 import { sleep } from "../test-utils";
 
-export const basic = {
-  name: "basic",
+export const basicFailure = {
+  name: "basic-failure",
   run: (scenario: Scenario) => {
-    sleep(500);
+    sleep(200);
     scenario.mark("step_1");
-    sleep(700);
+    sleep(400);
     scenario.mark("step_2");
-    sleep(1000);
-    scenario.stop();
+    sleep(1500);
+    scenario.fail();
   },
   expectedSteps: [
     {
@@ -22,26 +22,26 @@ export const basic = {
     },
     {
       step: "step_1",
-      delta: 500,
-      stepDelta: 500,
+      delta: 200,
+      stepDelta: 200,
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
     },
     {
       step: "step_2",
-      delta: 1200,
-      stepDelta: 700,
+      delta: 600,
+      stepDelta: 400,
       sequence: 3,
       status: ScenarioStatus.Success,
       previousStep: "step_1",
     },
     {
       step: ScenarioStep.Stop,
-      delta: 2200,
-      stepDelta: 1000,
+      delta: 2100,
+      stepDelta: 1500,
       sequence: 4,
-      status: ScenarioStatus.Success,
+      status: ScenarioStatus.Failure,
       previousStep: "step_2",
     },
   ],
