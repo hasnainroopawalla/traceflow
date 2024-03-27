@@ -16,8 +16,9 @@ import { resumeBeforePause } from "./resume-before-pause";
 import { stopDuringPause } from "./stop-during-pause";
 
 type IScenarioPreset = {
-  name: string;
   run: (scenario: Scenario) => void;
+  name: string;
+  data: { [key: string]: unknown };
   expectedSteps: Omit<IScenarioStep, "timestamp">[];
 };
 

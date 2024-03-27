@@ -10,6 +10,7 @@ export type IScenarioStep = {
   stepDelta: number;
   sequence: number;
   previousStep?: string;
+  data: IScenarioData;
 };
 
 export type IScenario = {

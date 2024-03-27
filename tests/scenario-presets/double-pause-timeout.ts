@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const doublePauseTimeout = {
   name: "double-pause-timeout",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(200);
     scenario.mark("step_1");
@@ -27,6 +28,7 @@ export const doublePauseTimeout = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+      data: {},
     },
     {
       step: "step_1",
@@ -35,6 +37,7 @@ export const doublePauseTimeout = {
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
+      data: {},
     },
     {
       step: ScenarioStep.Pause,
@@ -43,6 +46,7 @@ export const doublePauseTimeout = {
       sequence: 3,
       status: ScenarioStatus.Success,
       previousStep: "step_1",
+      data: {},
     },
     {
       step: "step_2",
@@ -51,6 +55,7 @@ export const doublePauseTimeout = {
       sequence: 4,
       status: ScenarioStatus.Success,
       previousStep: "pause",
+      data: {},
     },
     {
       step: ScenarioStep.Pause,
@@ -59,6 +64,7 @@ export const doublePauseTimeout = {
       sequence: 5,
       status: ScenarioStatus.Success,
       previousStep: "step_2",
+      data: {},
     },
     {
       step: ScenarioStep.Stop,
@@ -67,6 +73,7 @@ export const doublePauseTimeout = {
       sequence: 6,
       status: ScenarioStatus.Timeout,
       previousStep: "pause",
+      data: {},
     },
   ],
 };

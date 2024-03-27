@@ -14,6 +14,8 @@ export class Scenario {
   public sequence: number;
   public isActive: boolean;
 
+  private pauseData: IScenarioData;
+
   private timer: Timer;
 
   constructor(scenarioName: string, timeoutInMs: number) {
@@ -44,26 +46,31 @@ export class Scenario {
     return this.steps[this.steps.length - 1];
   }
 
-  public stop(): void {
+  public stop(data?: IScenarioData): void {
     if (!this.isActive) {
       return;
     }
-    this.mark(ScenarioStep.Stop);
+    this.mark(ScenarioStep.Stop, data);
     this.terminate();
   }
 
-  public fail(): void {
+  public fail(data?: IScenarioData): void {
     if (!this.isActive) {
       return;
     }
-    this.mark(ScenarioStep.Stop, ScenarioStatus.Failure);
+    this.mark(ScenarioStep.Stop, data, ScenarioStatus.Failure);
     this.terminate();
   }
 
-  public mark(step: string, status?: ScenarioStatus): void {
+  public mark(
+    step: string,
+    data?: IScenarioData,
+    status?: ScenarioStatus
+  ): void {
     if (!this.isActive) {
       return;
     }
+
     const { timestamp, stepDelta, delta } = this.timer.mark(
       step === ScenarioStep.Pause
     );
@@ -74,14 +81,15 @@ export class Scenario {
       delta,
       stepDelta,
       status: status || ScenarioStatus.Success,
+      data: data || {},
     });
   }
 
-  // TODO: add reason/context
-  public pause(): void {
+  public pause(data?: IScenarioData): void {
     if (!this.isActive || this.timer.isPaused()) {
       return;
     }
+    this.pauseData = data || {};
     this.timer.pause();
   }
 
@@ -89,7 +97,7 @@ export class Scenario {
     if (!this.isActive || !this.timer.isPaused()) {
       return;
     }
-    this.mark(ScenarioStep.Pause);
+    this.mark(ScenarioStep.Pause, this.pauseData);
     this.timer.resume();
   }
 
@@ -97,7 +105,7 @@ export class Scenario {
     if (!this.isActive) {
       return;
     }
-    this.scenarioData = { ...this.scenarioData, scenarioData };
+    this.scenarioData = { ...this.scenarioData, ...scenarioData };
   }
 
   public terminate() {
@@ -106,15 +114,12 @@ export class Scenario {
   }
 
   private timeout(): void {
-    this.mark(ScenarioStep.Stop, ScenarioStatus.Timeout);
+    this.mark(ScenarioStep.Stop, undefined, ScenarioStatus.Timeout);
     this.terminate();
   }
 
   private createNewStep(
-    props: Pick<
-      IScenarioStep,
-      "step" | "status" | "timestamp" | "delta" | "stepDelta"
-    >
+    props: Omit<IScenarioStep, "sequence" | "previousStep">
   ) {
     const newStep = {
       ...props,

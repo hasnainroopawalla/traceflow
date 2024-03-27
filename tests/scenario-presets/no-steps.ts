@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const noSteps = {
   name: "no-steps",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(1000);
     scenario.stop();
@@ -15,6 +16,7 @@ export const noSteps = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+      data: {},
     },
     {
       step: ScenarioStep.Stop,
@@ -23,6 +25,7 @@ export const noSteps = {
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
+      data: {},
     },
   ],
 };

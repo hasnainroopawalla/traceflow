@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const stopDuringPause = {
   name: "stop-during-pause",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(400);
     scenario.mark("step_1");
@@ -24,6 +25,7 @@ export const stopDuringPause = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+      data: {},
     },
     {
       step: "step_1",
@@ -32,6 +34,7 @@ export const stopDuringPause = {
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
+      data: {},
     },
     {
       step: ScenarioStep.Stop,
@@ -40,6 +43,7 @@ export const stopDuringPause = {
       sequence: 3,
       status: ScenarioStatus.Success,
       previousStep: "step_1",
+      data: {},
     },
   ],
 };

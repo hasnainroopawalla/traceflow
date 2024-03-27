@@ -26,6 +26,10 @@ describe("Scenario", () => {
     scenarioPreset.run(scenario);
 
     expect(scenario.info.name).toBe(scenarioPreset.name);
+    expect(scenario.info.data).toMatchObject(scenarioPreset.data);
+    // expect(JSON.stringify(scenario.info.data)).toBe(
+    //   JSON.stringify(scenarioPreset.data)
+    // );
     validateScenarioSteps(scenario.steps, scenarioPreset.expectedSteps);
     expect(timerDestroySpy).toHaveBeenCalledTimes(1);
   });

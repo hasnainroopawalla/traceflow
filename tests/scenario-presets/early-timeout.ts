@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const earlyTimeout = {
   name: "early-timeout",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(700);
     scenario.mark("step_1");
@@ -21,6 +22,7 @@ export const earlyTimeout = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+      data: {},
     },
     {
       step: "step_1",
@@ -29,6 +31,7 @@ export const earlyTimeout = {
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
+      data: {},
     },
     {
       step: "stop",
@@ -37,6 +40,7 @@ export const earlyTimeout = {
       sequence: 3,
       status: ScenarioStatus.Timeout,
       previousStep: "step_1",
+      data: {},
     },
   ],
 };
