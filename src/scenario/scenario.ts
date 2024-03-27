@@ -1,11 +1,10 @@
+import { ScenarioStep, ScenarioStatus } from "./scenario.enums";
 import {
   type IScenarioData,
   type IScenarioStep,
   type IScenario,
-  ScenarioStep,
-  ScenarioStatus,
 } from "./scenario.interface";
-import { Timer } from "./timer";
+import { Timer } from "../timer";
 
 export class Scenario {
   public id: string;
@@ -122,9 +121,10 @@ export class Scenario {
       sequence: this.sequence,
       previousStep: this.sequence > 1 ? this.currentStep.step : undefined,
     };
-    console.log(
-      `-> ${newStep.step} || delta: ${newStep.delta}, stepDelta: ${newStep.stepDelta}, timestamp: ${newStep.timestamp}`
-    );
+    // TODO: add verbose control
+    // console.log(
+    //   `-> ${newStep.step} || delta: ${newStep.delta}, stepDelta: ${newStep.stepDelta}, timestamp: ${newStep.timestamp}`
+    // );
     this.steps.push(newStep);
     this.sequence += 1;
   }

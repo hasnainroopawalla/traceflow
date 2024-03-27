@@ -1,9 +1,5 @@
 import { Pauser } from "./pauser";
-
-type ITimerMarker = {
-  timestamp: number;
-  delta: number;
-};
+import type { ITimerMarker } from "./timer.interface";
 
 export class Timer {
   public startedAt: number;

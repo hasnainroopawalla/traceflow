@@ -1,9 +1,4 @@
-type IPauseInfo =
-  | { isPaused: false; resumedAt: number }
-  | {
-      isPaused: true;
-      pausedAt: number;
-    };
+import type { IPauseInfo } from "./timer.interface";
 
 export class Pauser {
   private pauseInfo: IPauseInfo;

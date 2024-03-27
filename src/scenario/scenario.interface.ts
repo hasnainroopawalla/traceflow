@@ -1,16 +1,6 @@
+import { ScenarioStatus } from "./scenario.enums";
+
 export type IScenarioData = { [key: string]: unknown };
-
-export enum ScenarioStatus {
-  Success = "success",
-  Timeout = "timeout",
-  Failure = "failure",
-}
-
-export enum ScenarioStep {
-  Start = "start",
-  Stop = "stop",
-  Pause = "pause",
-}
 
 export type IScenarioStep = {
   step: string;
