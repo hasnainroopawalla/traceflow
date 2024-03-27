@@ -3,7 +3,6 @@ import { Pauser } from "./pauser";
 type ITimerMarker = {
   timestamp: number;
   delta: number;
-  stepDelta: number;
 };
 
 export class Timer {
@@ -11,7 +10,7 @@ export class Timer {
   private timerId: NodeJS.Timeout;
   private onTimeout: () => void;
   private timeoutInMs: number;
-  private markers: ITimerMarker[];
+  private currentMarker: ITimerMarker;
 
   private pauser: Pauser;
 
@@ -19,14 +18,17 @@ export class Timer {
     this.timeoutInMs = timeoutInMs;
     this.startedAt = Date.now();
     this.onTimeout = onTimeout;
+    this.currentMarker = {
+      timestamp: this.startedAt,
+      delta: 0,
+    };
     this.pauser = new Pauser();
-    this.markers = [];
     this.startTimer(timeoutInMs);
   }
 
   public mark(isResumeStep = false) {
     const marker = this.computeDeltas(isResumeStep);
-    this.markers.push(marker);
+    this.currentMarker = marker;
     return marker;
   }
 
@@ -37,23 +39,26 @@ export class Timer {
   }
 
   public resume(): void {
-    const { pauseDuration, resumedAt } = this.pauser.resume();
+    const { resumedAt } = this.pauser.resume();
 
-    const { delta } = this.latestMarker();
+    const { delta } = this.currentMarker;
 
     const remainingTime = this.timeoutInMs - delta;
 
     this.startTimer(remainingTime);
 
-    this.markers.push({
+    this.currentMarker = {
       timestamp: resumedAt,
       delta,
-      stepDelta: pauseDuration,
-    });
+    };
   }
 
   public destroy() {
     this.stopTimer();
+  }
+
+  public isPaused() {
+    return this.pauser.isPaused();
   }
 
   private startTimer(duration: number) {
@@ -65,7 +70,7 @@ export class Timer {
   }
 
   private computeDeltas(isResumeStep = false) {
-    const { delta: prevDelta, timestamp: prevTimestamp } = this.latestMarker();
+    const { delta: prevDelta, timestamp: prevTimestamp } = this.currentMarker;
 
     const now = isResumeStep ? this.pauser.pausedAt() : Date.now();
     const stepDelta = now - prevTimestamp;
@@ -76,15 +81,5 @@ export class Timer {
       delta,
       stepDelta: isResumeStep ? this.pauser.pauseDuration() : stepDelta,
     };
-  }
-
-  private latestMarker(): ITimerMarker {
-    return (
-      this.markers[this.markers.length - 1] || {
-        timestamp: this.startedAt,
-        delta: 0,
-        stepDelta: 0,
-      }
-    );
   }
 }

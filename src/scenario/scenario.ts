@@ -80,14 +80,14 @@ export class Scenario {
 
   // TODO: add reason/context
   public pause(): void {
-    if (!this.isActive) {
+    if (!this.isActive || this.timer.isPaused()) {
       return;
     }
     this.timer.pause();
   }
 
   public resume(): void {
-    if (!this.isActive) {
+    if (!this.isActive || !this.timer.isPaused()) {
       return;
     }
     this.mark(ScenarioStep.Pause);

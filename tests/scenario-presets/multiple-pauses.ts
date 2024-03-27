@@ -1,20 +1,17 @@
 import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
 import { sleep } from "../test-utils";
 
-export const singlePauseRepeated = {
-  name: "single-pause-repeated",
+export const multiplePauses = {
+  name: "multiple-pauses",
   run: (scenario: Scenario) => {
     sleep(400);
     scenario.mark("step_1");
-    scenario.resume();
     sleep(700);
     scenario.pause();
     scenario.pause();
     scenario.pause();
     scenario.pause();
     sleep(1000);
-    scenario.resume();
-    scenario.resume();
     scenario.resume();
     sleep(300);
     scenario.mark("step_2");

@@ -11,7 +11,8 @@ import { immediateTimeout } from "./immediate-timeout";
 import { noSteps } from "./no-steps";
 import { noStepsTimeout } from "./no-steps-timeout";
 import { basicNoStopStep } from "./basic-no-stop-step";
-// import { singlePauseRepeated } from "./single-pause-repeated";
+import { multiplePauses } from "./multiple-pauses";
+import { resumeBeforePause } from "./resume-before-pause";
 
 type IScenarioPreset = {
   name: string;
@@ -32,5 +33,6 @@ export const scenarioPresets: IScenarioPreset[] = [
   doublePause,
   doublePauseTimeout,
   immediateTimeout,
-  // singlePauseRepeated,
+  multiplePauses,
+  resumeBeforePause,
 ];

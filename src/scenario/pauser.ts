@@ -12,16 +12,20 @@ export class Pauser {
     this.pauseInfo = { isPaused: false, resumedAt: Date.now() };
   }
 
+  public isPaused() {
+    return this.pauseInfo.isPaused;
+  }
+
   public pausedAt() {
     if (!this.pauseInfo.isPaused) {
-      throw new Error("Timer not paused");
+      throw new Error("Pauser.pausedAt() called when timer not paused");
     }
     return this.pauseInfo.pausedAt;
   }
 
   public pauseDuration() {
     if (!this.pauseInfo.isPaused) {
-      throw new Error("Timer not paused");
+      throw new Error("Pauser.pauseDuration() called when timer not paused");
     }
     return Date.now() - this.pauseInfo.pausedAt;
   }
@@ -35,7 +39,7 @@ export class Pauser {
 
   public resume() {
     if (!this.pauseInfo.isPaused) {
-      throw new Error("Timer not paused");
+      throw new Error("Pauser.resume() called when timer not paused");
     }
 
     const { pausedAt } = this.pauseInfo;
