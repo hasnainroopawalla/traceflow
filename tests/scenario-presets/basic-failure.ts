@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const basicFailure = {
   name: "basic-failure",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(200);
     scenario.mark("step_1");
@@ -19,6 +20,7 @@ export const basicFailure = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+      data: {},
     },
     {
       step: "step_1",
@@ -27,6 +29,7 @@ export const basicFailure = {
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
+      data: {},
     },
     {
       step: "step_2",
@@ -35,6 +38,7 @@ export const basicFailure = {
       sequence: 3,
       status: ScenarioStatus.Success,
       previousStep: "step_1",
+      data: {},
     },
     {
       step: ScenarioStep.Stop,
@@ -43,6 +47,7 @@ export const basicFailure = {
       sequence: 4,
       status: ScenarioStatus.Failure,
       previousStep: "step_2",
+      data: {},
     },
   ],
 };

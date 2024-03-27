@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const immediateTimeout = {
   name: "immediate-timeout",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(5000);
     scenario.mark("step_1");
@@ -19,6 +20,8 @@ export const immediateTimeout = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+
+      data: {},
     },
     {
       step: ScenarioStep.Stop,
@@ -27,6 +30,8 @@ export const immediateTimeout = {
       sequence: 2,
       status: ScenarioStatus.Timeout,
       previousStep: "start",
+
+      data: {},
     },
   ],
 };

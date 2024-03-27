@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const resumeBeforePause = {
   name: "resume-before-pause",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(400);
     scenario.mark("step_1");
@@ -24,6 +25,7 @@ export const resumeBeforePause = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+      data: {},
     },
     {
       step: "step_1",
@@ -32,6 +34,7 @@ export const resumeBeforePause = {
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
+      data: {},
     },
     {
       step: ScenarioStep.Pause,
@@ -40,6 +43,7 @@ export const resumeBeforePause = {
       sequence: 3,
       status: ScenarioStatus.Success,
       previousStep: "step_1",
+      data: {},
     },
     {
       step: "step_2",
@@ -48,6 +52,7 @@ export const resumeBeforePause = {
       sequence: 4,
       status: ScenarioStatus.Success,
       previousStep: "pause",
+      data: {},
     },
     {
       step: ScenarioStep.Stop,
@@ -56,6 +61,7 @@ export const resumeBeforePause = {
       sequence: 5,
       status: ScenarioStatus.Success,
       previousStep: "step_2",
+      data: {},
     },
   ],
 };

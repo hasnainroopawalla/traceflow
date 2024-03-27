@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const singlePauseTimeout = {
   name: "single-pause-timeout",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(400);
     scenario.mark("step_1");
@@ -23,6 +24,7 @@ export const singlePauseTimeout = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+      data: {},
     },
     {
       step: "step_1",
@@ -31,6 +33,7 @@ export const singlePauseTimeout = {
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
+      data: {},
     },
     {
       step: ScenarioStep.Pause,
@@ -39,6 +42,7 @@ export const singlePauseTimeout = {
       sequence: 3,
       status: ScenarioStatus.Success,
       previousStep: "step_1",
+      data: {},
     },
     {
       step: ScenarioStep.Stop,
@@ -47,6 +51,7 @@ export const singlePauseTimeout = {
       sequence: 4,
       status: ScenarioStatus.Timeout,
       previousStep: "pause",
+      data: {},
     },
   ],
 };

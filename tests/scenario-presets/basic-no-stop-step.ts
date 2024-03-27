@@ -3,6 +3,7 @@ import { sleep } from "../test-utils";
 
 export const basicNoStopStep = {
   name: "basic-no-stop-step",
+  data: {},
   run: (scenario: Scenario) => {
     sleep(500);
     scenario.mark("step_1");
@@ -18,6 +19,7 @@ export const basicNoStopStep = {
       sequence: 1,
       status: ScenarioStatus.Success,
       previousStep: undefined,
+      data: {},
     },
     {
       step: "step_1",
@@ -26,6 +28,7 @@ export const basicNoStopStep = {
       sequence: 2,
       status: ScenarioStatus.Success,
       previousStep: "start",
+      data: {},
     },
     {
       step: "step_2",
@@ -34,6 +37,7 @@ export const basicNoStopStep = {
       sequence: 3,
       status: ScenarioStatus.Success,
       previousStep: "step_1",
+      data: {},
     },
     {
       step: ScenarioStep.Stop,
@@ -42,6 +46,7 @@ export const basicNoStopStep = {
       sequence: 4,
       status: ScenarioStatus.Timeout,
       previousStep: "step_2",
+      data: {},
     },
   ],
 };
