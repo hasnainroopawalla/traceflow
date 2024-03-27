@@ -26,6 +26,7 @@ export class Scenario {
     this.sequence = 1;
     this.isActive = true;
     this.timer = new Timer(() => this.timeout(), timeoutInMs);
+    this.pauseData = {};
     this.mark(ScenarioStep.Start);
   }
 
