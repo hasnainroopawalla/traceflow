@@ -4,6 +4,7 @@ import { sleep } from "../test-utils";
 export const singlePause = {
   name: "single-pause",
   data: {},
+  status: ScenarioStatus.Success,
   run: (scenario: Scenario) => {
     sleep(400);
     scenario.mark("step_1", {
@@ -30,7 +31,7 @@ export const singlePause = {
       stepDelta: 0,
       sequence: 1,
       status: ScenarioStatus.Success,
-      previousStep: undefined,
+      previousStep: "",
       data: {},
     },
     {

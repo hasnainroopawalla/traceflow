@@ -1,4 +1,8 @@
-import { type IScenarioStep, Scenario } from "../../src/scenario";
+import {
+  type IScenarioStep,
+  Scenario,
+  ScenarioStatus,
+} from "../../src/scenario";
 import { basicSuccess } from "./basic-success";
 import { basicFailure } from "./basic-failure";
 import { singlePause } from "./single-pause";
@@ -19,6 +23,7 @@ type IScenarioPreset = {
   run: (scenario: Scenario) => void;
   name: string;
   data: { [key: string]: unknown };
+  status: ScenarioStatus;
   expectedSteps: Omit<IScenarioStep, "timestamp">[];
 };
 

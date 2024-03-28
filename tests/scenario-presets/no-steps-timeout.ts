@@ -4,6 +4,7 @@ import { sleep } from "../test-utils";
 export const noStepsTimeout = {
   name: "no-steps-timeout",
   data: {},
+  status: ScenarioStatus.Timeout,
   run: (scenario: Scenario) => {
     sleep(5000);
     scenario.stop();
@@ -15,7 +16,7 @@ export const noStepsTimeout = {
       stepDelta: 0,
       sequence: 1,
       status: ScenarioStatus.Success,
-      previousStep: undefined,
+      previousStep: "",
       data: {},
     },
     {

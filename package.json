@@ -1,7 +1,7 @@
 {
-  "name": "scenariometry",
+  "name": "traceflow",
   "version": "0.1.1",
-  "description": "Track app scenarios with precision using telemetry markers.",
+  "description": "Track app scenarios with precision using telemetry markers",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -18,9 +18,11 @@
     "LICENSE",
     "README.md"
   ],
-  "keywords": [],
+  "keywords": [
+    "typescript", "react", "scenario", "marker", "telemetry"
+  ],
   "author": "Hasnain Roopawalla",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/react": "^18.2.64",

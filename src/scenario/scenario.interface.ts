@@ -20,5 +20,7 @@ export type IScenario = {
   steps: IScenarioStep[];
   data: IScenarioData;
   startedAt: number;
+  finishedAt?: number;
   delta?: number;
+  status?: ScenarioStatus;
 };

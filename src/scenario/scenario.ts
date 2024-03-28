@@ -39,7 +39,8 @@ export class Scenario {
       data: this.scenarioData,
       delta: this.currentStep.delta,
       startedAt: this.timer.startedAt,
-      // TODO: finishedAt, status
+      finishedAt: this.isActive ? undefined : this.currentStep.timestamp,
+      status: this.isActive ? undefined : this.currentStep.status,
     };
   }
 
@@ -125,12 +126,8 @@ export class Scenario {
     const newStep = {
       ...props,
       sequence: this.sequence,
-      previousStep: this.sequence > 1 ? this.currentStep.step : undefined,
+      previousStep: this.sequence > 1 ? this.currentStep.step : "",
     };
-    // TODO: add verbose control
-    // console.log(
-    //   `-> ${newStep.step} || delta: ${newStep.delta}, stepDelta: ${newStep.stepDelta}, timestamp: ${newStep.timestamp}`
-    // );
     this.steps.push(newStep);
     this.sequence += 1;
   }

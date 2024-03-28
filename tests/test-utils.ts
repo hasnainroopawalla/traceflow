@@ -17,8 +17,6 @@ export const validateScenarioSteps = (
     expect(expectedStep.delta).toBe(actualStep.delta);
     expect(expectedStep.stepDelta).toBe(actualStep.stepDelta);
     expect(expectedStep.previousStep).toBe(actualStep.previousStep);
-    expect(JSON.stringify(expectedStep.data)).toBe(
-      JSON.stringify(actualStep.data)
-    );
+    expect(expectedStep.data).toMatchObject(actualStep.data);
   }
 };

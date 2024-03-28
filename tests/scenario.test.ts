@@ -27,9 +27,7 @@ describe("Scenario", () => {
 
     expect(scenario.info.name).toBe(scenarioPreset.name);
     expect(scenario.info.data).toMatchObject(scenarioPreset.data);
-    // expect(JSON.stringify(scenario.info.data)).toBe(
-    //   JSON.stringify(scenarioPreset.data)
-    // );
+    expect(scenario.info.status).toBe(scenarioPreset.status);
     validateScenarioSteps(scenario.steps, scenarioPreset.expectedSteps);
     expect(timerDestroySpy).toHaveBeenCalledTimes(1);
   });

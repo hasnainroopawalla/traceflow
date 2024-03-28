@@ -4,6 +4,7 @@ import { sleep } from "../test-utils";
 export const basicSuccess = {
   name: "basic-success",
   data: {},
+  status: ScenarioStatus.Success,
   run: (scenario: Scenario) => {
     sleep(500);
     scenario.mark("step_1");
@@ -21,7 +22,7 @@ export const basicSuccess = {
       stepDelta: 0,
       sequence: 1,
       status: ScenarioStatus.Success,
-      previousStep: undefined,
+      previousStep: "",
       data: {},
     },
     {
