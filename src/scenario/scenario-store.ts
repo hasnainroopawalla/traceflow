@@ -1,4 +1,4 @@
-import { Scenario } from ".";
+import { Scenario } from "./scenario";
 
 export class ScenarioStoreFactory {
   private scenarios: Scenario[];
