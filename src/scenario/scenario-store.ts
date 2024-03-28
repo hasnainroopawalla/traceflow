@@ -1,23 +1,14 @@
-import { Scenario } from "../scenario";
+import { Scenario } from ".";
 
-export class ScenarioStore {
-  private static instance: ScenarioStore;
+export class ScenarioStoreFactory {
   private scenarios: Scenario[];
 
-  private constructor() {
+  constructor() {
     this.scenarios = [];
   }
 
-  public static getInstance(): ScenarioStore {
-    if (!ScenarioStore.instance) {
-      ScenarioStore.instance = new ScenarioStore();
-    }
-    return ScenarioStore.instance;
-  }
-
-  // exported for testing
-  public static resetInstance() {
-    ScenarioStore.instance = new ScenarioStore();
+  public clearAllScenarios() {
+    this.scenarios = [];
   }
 
   public newScenario(scenarioName: string, timeoutInMs: number) {
@@ -38,3 +29,5 @@ export class ScenarioStore {
     );
   }
 }
+
+export const ScenarioStore = new ScenarioStoreFactory();
