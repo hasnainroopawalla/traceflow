@@ -4,6 +4,7 @@ import { sleep } from "../test-utils";
 export const multiplePauses = {
   name: "multiple-pauses",
   data: {},
+  status: ScenarioStatus.Success,
   run: (scenario: Scenario) => {
     sleep(400);
     scenario.mark("step_1");
@@ -26,7 +27,7 @@ export const multiplePauses = {
       stepDelta: 0,
       sequence: 1,
       status: ScenarioStatus.Success,
-      previousStep: undefined,
+      previousStep: "",
       data: {},
     },
     {

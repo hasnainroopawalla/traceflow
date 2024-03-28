@@ -4,13 +4,16 @@ import { sleep } from "../test-utils";
 export const basicFailure = {
   name: "basic-failure",
   data: {},
+  status: ScenarioStatus.Failure,
   run: (scenario: Scenario) => {
     sleep(200);
     scenario.mark("step_1");
     sleep(400);
     scenario.mark("step_2");
     sleep(1500);
-    scenario.fail();
+    scenario.fail({
+      error: "not found",
+    });
   },
   expectedSteps: [
     {
@@ -19,7 +22,7 @@ export const basicFailure = {
       stepDelta: 0,
       sequence: 1,
       status: ScenarioStatus.Success,
-      previousStep: undefined,
+      previousStep: "",
       data: {},
     },
     {
@@ -47,7 +50,9 @@ export const basicFailure = {
       sequence: 4,
       status: ScenarioStatus.Failure,
       previousStep: "step_2",
-      data: {},
+      data: {
+        error: "not found",
+      },
     },
   ],
 };

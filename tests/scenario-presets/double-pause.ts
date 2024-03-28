@@ -8,6 +8,7 @@ export const doublePause = {
     context: "context-A",
     selectedId: "abc",
   },
+  status: ScenarioStatus.Success,
   run: (scenario: Scenario) => {
     sleep(200);
     scenario.mark("step_1");
@@ -42,7 +43,7 @@ export const doublePause = {
       stepDelta: 0,
       sequence: 1,
       status: ScenarioStatus.Success,
-      previousStep: undefined,
+      previousStep: "",
       data: {},
     },
     {
