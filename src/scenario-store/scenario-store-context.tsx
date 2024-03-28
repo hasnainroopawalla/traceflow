@@ -12,15 +12,13 @@ const ScenarioStoreContext = React.createContext<IScenarioStoreContext>(
 export const ScenarioStoreProvider: React.FC<React.PropsWithChildren> = (
   props
 ) => {
-  const { children } = props;
-
   const scenarioStore = React.useMemo(() => ScenarioStore.getInstance(), []);
 
   const value = React.useMemo(() => ({ scenarioStore }), [scenarioStore]);
 
   return (
     <ScenarioStoreContext.Provider value={value}>
-      {children}
+      {props.children}
     </ScenarioStoreContext.Provider>
   );
 };
