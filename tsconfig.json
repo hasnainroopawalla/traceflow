@@ -2,8 +2,7 @@
   "include": ["src"],
   "exclude": ["test", "dist", "node_modules"],
   "compilerOptions": {
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
+    "module": "commonjs",
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
@@ -13,7 +12,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
