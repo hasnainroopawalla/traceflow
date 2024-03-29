@@ -1,7 +1,7 @@
 export {
-  ScenarioStore,
-  ScenarioStatus,
-  ScenarioStep,
-  type Scenario,
-  type IScenarioStep,
-} from "./scenario";
+  FlowStore,
+  FlowStatus,
+  FlowStep,
+  type Flow,
+  type IFlowStep,
+} from "./flow";

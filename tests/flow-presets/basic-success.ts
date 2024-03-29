@@ -1,27 +1,27 @@
-import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
+import { Flow, FlowStatus, FlowStep } from "../../src";
 import { sleep } from "../test-utils";
 
 export const basicSuccess = {
   name: "basic-success",
   data: {},
-  status: ScenarioStatus.Success,
-  run: (scenario: Scenario) => {
+  status: FlowStatus.Success,
+  run: (flow: Flow) => {
     sleep(500);
-    scenario.mark("step_1");
+    flow.mark("step_1");
     sleep(700);
-    scenario.mark("step_2", {
+    flow.mark("step_2", {
       reason: "custom-reason",
     });
     sleep(1000);
-    scenario.stop();
+    flow.stop();
   },
   expectedSteps: [
     {
-      step: ScenarioStep.Start,
+      step: FlowStep.Start,
       delta: 0,
       stepDelta: 0,
       sequence: 1,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "",
       data: {},
     },
@@ -30,7 +30,7 @@ export const basicSuccess = {
       delta: 500,
       stepDelta: 500,
       sequence: 2,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "start",
       data: {},
     },
@@ -39,18 +39,18 @@ export const basicSuccess = {
       delta: 1200,
       stepDelta: 700,
       sequence: 3,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_1",
       data: {
         reason: "custom-reason",
       },
     },
     {
-      step: ScenarioStep.Stop,
+      step: FlowStep.Stop,
       delta: 2200,
       stepDelta: 1000,
       sequence: 4,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_2",
       data: {},
     },

@@ -1,30 +1,30 @@
-import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
+import { Flow, FlowStatus, FlowStep } from "../../src";
 import { sleep } from "../test-utils";
 
 export const noSteps = {
   name: "no-steps",
   data: {},
-  status: ScenarioStatus.Success,
-  run: (scenario: Scenario) => {
+  status: FlowStatus.Success,
+  run: (flow: Flow) => {
     sleep(1000);
-    scenario.stop();
+    flow.stop();
   },
   expectedSteps: [
     {
-      step: ScenarioStep.Start,
+      step: FlowStep.Start,
       delta: 0,
       stepDelta: 0,
       sequence: 1,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "",
       data: {},
     },
     {
-      step: ScenarioStep.Stop,
+      step: FlowStep.Stop,
       delta: 1000,
       stepDelta: 1000,
       sequence: 2,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "start",
       data: {},
     },

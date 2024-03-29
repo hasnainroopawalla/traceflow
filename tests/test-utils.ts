@@ -1,10 +1,10 @@
-import type { IScenarioStep } from "../src/scenario";
+import type { IFlowStep } from "../src";
 
 export const sleep = (duration: number) => jest.advanceTimersByTime(duration);
 
-export const validateScenarioSteps = (
-  actualSteps: IScenarioStep[],
-  expectedSteps: Omit<IScenarioStep, "timestamp">[]
+export const validateFlowSteps = (
+  actualSteps: IFlowStep[],
+  expectedSteps: Omit<IFlowStep, "timestamp">[]
 ) => {
   expect(actualSteps.length).toBe(expectedSteps.length);
   for (let i = 0; i < actualSteps.length; i++) {

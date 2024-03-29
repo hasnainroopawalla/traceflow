@@ -1,29 +1,29 @@
-import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
+import { Flow, FlowStatus, FlowStep } from "../../src";
 import { sleep } from "../test-utils";
 
 export const singlePauseTimeout = {
   name: "single-pause-timeout",
   data: {},
-  status: ScenarioStatus.Timeout,
-  run: (scenario: Scenario) => {
+  status: FlowStatus.Timeout,
+  run: (flow: Flow) => {
     sleep(400);
-    scenario.mark("step_1");
+    flow.mark("step_1");
     sleep(700);
-    scenario.pause();
+    flow.pause();
     sleep(1000);
-    scenario.resume();
+    flow.resume();
     sleep(4000);
-    scenario.mark("step_2");
+    flow.mark("step_2");
     sleep(300);
-    scenario.stop();
+    flow.stop();
   },
   expectedSteps: [
     {
-      step: ScenarioStep.Start,
+      step: FlowStep.Start,
       delta: 0,
       stepDelta: 0,
       sequence: 1,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "",
       data: {},
     },
@@ -32,25 +32,25 @@ export const singlePauseTimeout = {
       delta: 400,
       stepDelta: 400,
       sequence: 2,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "start",
       data: {},
     },
     {
-      step: ScenarioStep.Pause,
+      step: FlowStep.Pause,
       delta: 1100,
       stepDelta: 1000,
       sequence: 3,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_1",
       data: {},
     },
     {
-      step: ScenarioStep.Stop,
+      step: FlowStep.Stop,
       delta: 3000,
       stepDelta: 1900,
       sequence: 4,
-      status: ScenarioStatus.Timeout,
+      status: FlowStatus.Timeout,
       previousStep: "pause",
       data: {},
     },

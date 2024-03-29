@@ -1,4 +1,4 @@
-import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
+import { Flow, FlowStatus, FlowStep } from "../../src";
 import { sleep } from "../test-utils";
 
 export const doublePause = {
@@ -8,41 +8,41 @@ export const doublePause = {
     context: "context-A",
     selectedId: "abc",
   },
-  status: ScenarioStatus.Success,
-  run: (scenario: Scenario) => {
+  status: FlowStatus.Success,
+  run: (flow: Flow) => {
     sleep(200);
-    scenario.mark("step_1");
+    flow.mark("step_1");
     sleep(700);
-    scenario.addScenarioData({
+    flow.addFlowData({
       user: "user1",
     });
-    scenario.pause({
+    flow.pause({
       reason: "pause-1",
     });
     sleep(1000);
-    scenario.resume();
+    flow.resume();
     sleep(300);
-    scenario.mark("step_2");
-    scenario.addScenarioData({
+    flow.mark("step_2");
+    flow.addFlowData({
       context: "context-A",
       selectedId: "abc",
     });
     sleep(500);
-    scenario.pause({
+    flow.pause({
       reason: "pause-2",
     });
     sleep(5500);
-    scenario.resume();
+    flow.resume();
     sleep(800);
-    scenario.stop();
+    flow.stop();
   },
   expectedSteps: [
     {
-      step: ScenarioStep.Start,
+      step: FlowStep.Start,
       delta: 0,
       stepDelta: 0,
       sequence: 1,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "",
       data: {},
     },
@@ -51,16 +51,16 @@ export const doublePause = {
       delta: 200,
       stepDelta: 200,
       sequence: 2,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "start",
       data: {},
     },
     {
-      step: ScenarioStep.Pause,
+      step: FlowStep.Pause,
       delta: 900,
       stepDelta: 1000,
       sequence: 3,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_1",
       data: {
         reason: "pause-1",
@@ -71,27 +71,27 @@ export const doublePause = {
       delta: 1200,
       stepDelta: 300,
       sequence: 4,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "pause",
       data: {},
     },
     {
-      step: ScenarioStep.Pause,
+      step: FlowStep.Pause,
       delta: 1700,
       stepDelta: 5500,
       sequence: 5,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_2",
       data: {
         reason: "pause-2",
       },
     },
     {
-      step: ScenarioStep.Stop,
+      step: FlowStep.Stop,
       delta: 2500,
       stepDelta: 800,
       sequence: 6,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "pause",
       data: {},
     },

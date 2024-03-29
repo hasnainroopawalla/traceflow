@@ -1,35 +1,35 @@
-import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
+import { Flow, FlowStatus, FlowStep } from "../../src";
 import { sleep } from "../test-utils";
 
 export const immediateTimeout = {
   name: "immediate-timeout",
   data: {},
-  status: ScenarioStatus.Timeout,
-  run: (scenario: Scenario) => {
+  status: FlowStatus.Timeout,
+  run: (flow: Flow) => {
     sleep(5000);
-    scenario.mark("step_1");
+    flow.mark("step_1");
     sleep(700);
-    scenario.mark("step_2");
+    flow.mark("step_2");
     sleep(1000);
-    scenario.stop();
+    flow.stop();
   },
   expectedSteps: [
     {
-      step: ScenarioStep.Start,
+      step: FlowStep.Start,
       delta: 0,
       stepDelta: 0,
       sequence: 1,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "",
 
       data: {},
     },
     {
-      step: ScenarioStep.Stop,
+      step: FlowStep.Stop,
       delta: 3000,
       stepDelta: 3000,
       sequence: 2,
-      status: ScenarioStatus.Timeout,
+      status: FlowStatus.Timeout,
       previousStep: "start",
 
       data: {},

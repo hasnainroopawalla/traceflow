@@ -1,7 +1,7 @@
 {
   "name": "trackflow",
-  "version": "0.1.1",
-  "description": "Track app scenarios with precision using telemetry markers",
+  "version": "0.1.2",
+  "description": "Track scenarios with precision using telemetry markers",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
