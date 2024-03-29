@@ -7,7 +7,7 @@ class FlowStoreFactory {
     this.flows = [];
   }
 
-  // exported for testing
+  // Exported only for testing
   public destroyAllFlows(): void {
     this.flows = [];
   }
@@ -30,19 +30,21 @@ class FlowStoreFactory {
    * Finds a currently active Flow by its name.
    *
    * @remarks
-   * If there are multiple active Flows with the same name
+   * Returns the most recent Flow if there are multiple active Flows with the same name
    * @param flowName - The name of the Flow/scenario
    * @param timeoutInMs - The timeout in milliseconds after which the Flow automatically times out
    * @returns The Flow object if it exists and is active
    */
   public findFlowByName(flowName: string): Flow | undefined {
-    return this.flows.find((flow) => flow.isActive && flow.name === flowName);
+    return this.flows.findLast(
+      (flow) => flow.isActive && flow.name === flowName
+    );
   }
 
   /**
    * Finds a currently active Flow by its ID.
    *
-   * @param flowId - The ID of the Flo2w/scenario
+   * @param flowId - The ID of the Flow/scenario
    * @returns The Flow object if it exists and is active
    */
   public findFlowById(flowId: string): Flow | undefined {
@@ -50,5 +52,5 @@ class FlowStoreFactory {
   }
 }
 
-// exports a singleton instance of the FlowStore.
+// Exports a singleton instance of the FlowStore.
 export const FlowStore = new FlowStoreFactory();

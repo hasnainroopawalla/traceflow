@@ -29,6 +29,14 @@ describe("FlowStore", () => {
     expect(FlowStore.findFlowByName("test-flow-1")).toBe(undefined);
   });
 
+  test("findFlowByName for 3 active flows with the same name", () => {
+    const _testFlow1 = FlowStore.newFlow("test-flow", 5000);
+    const _testFlow2 = FlowStore.newFlow("test-flow", 10000);
+    const testFlow3 = FlowStore.newFlow("test-flow", 2000);
+
+    expect(FlowStore.findFlowByName("test-flow")).toMatchObject(testFlow3);
+  });
+
   test("findFlowById with 2 active flows", () => {
     const testFlow1 = FlowStore.newFlow("test-flow-1", 5000);
     const testFlow2 = FlowStore.newFlow("test-flow-2", 10000);
