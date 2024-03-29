@@ -23,10 +23,12 @@ describe("Flow", () => {
     const flow = FlowStore.newFlow(flowPreset.name, 3000);
     flowPreset.run(flow);
 
-    expect(flow.info.name).toBe(flowPreset.name);
-    expect(flow.info.data).toMatchObject(flowPreset.data);
-    expect(flow.info.status).toBe(flowPreset.status);
-    validateFlowSteps(flow.info.steps, flowPreset.expectedSteps);
+    const flowInfo = flow.info();
+
+    expect(flowInfo.name).toBe(flowPreset.name);
+    expect(flowInfo.data).toMatchObject(flowPreset.data);
+    expect(flowInfo.status).toBe(flowPreset.status);
+    validateFlowSteps(flowInfo.steps, flowPreset.expectedSteps);
     expect(timerDestroySpy).toHaveBeenCalledTimes(1);
   });
 });

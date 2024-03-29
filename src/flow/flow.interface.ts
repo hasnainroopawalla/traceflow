@@ -27,12 +27,14 @@ export type IFlowInfo = {
 
 /**
  * A Flow to track a scenario using markers.
+ *
  * @param flowName - The name of the Flow/scenario
  * @param timeoutInMs - The timeout in milliseconds after which the Flow automatically times out
  */
 export type IFlow = {
   /**
    * Stops the Flow with the `success` status.
+   *
    * @remarks
    * Stops the Flow only if its active.
    * @param data - [optional] data to append to the `stop` step
@@ -41,6 +43,7 @@ export type IFlow = {
 
   /**
    * Stops the Flow with the `failure` status.
+   *
    * @remarks
    * Stops the Flow only if its active.
    * @param data - [optional] data to append to the `fail` step
@@ -49,6 +52,7 @@ export type IFlow = {
 
   /**
    * Creates a marker/step on the Flow with the current timestamp and other computed fields.
+   *
    * @remarks
    * Creates a marker only if the Flow is active.
    * @param step - The name of the marker
@@ -60,6 +64,7 @@ export type IFlow = {
   /**
    * Pauses the Flow for indefinite amount of time until resumed.
    * The `pause` step marker is created when the Flow is resumed.
+   *
    * @remarks
    * Pauses the Flow only if its active and not already in a paused state.
    * The ongoing timer is paused after this method is called.
@@ -70,6 +75,7 @@ export type IFlow = {
   /**
    * Resumes the Flow and continues the paused timer.
    * The `pause` step marker is created here.
+   *
    * @remarks
    * Pauses the Flow only if its active and in a paused state.
    */
@@ -77,6 +83,7 @@ export type IFlow = {
 
   /**
    * Adds data to the Flow.
+   *
    * @remarks
    * Adds data to the Flow only if its active.
    * @param data - Data to append to the Flow
@@ -85,8 +92,9 @@ export type IFlow = {
 
   /**
    * Returns an IFlow object containing all information about the Flow.
+   *
    * @remarks
-   * This getter should ideally be called only for inactive Flows.
+   * This method should ideally be called only for completed Flows.
    * @returns The IFlow object
    */
   info: () => IFlowInfo;

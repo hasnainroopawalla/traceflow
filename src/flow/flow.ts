@@ -25,7 +25,7 @@ export class Flow implements IFlow {
     this.mark(FlowStep.Start);
   }
 
-  public info() {
+  public info(): IFlowInfo {
     const { delta, timestamp, status } = this.currentStep();
     return {
       id: this.id,
@@ -37,7 +37,7 @@ export class Flow implements IFlow {
       startedAt: this.timer.startedAt,
       finishedAt: !this.isActive ? undefined : timestamp,
       status: this.isActive ? undefined : status,
-    } as IFlowInfo;
+    };
   }
 
   public stop(data?: IFlowData) {
@@ -118,7 +118,7 @@ export class Flow implements IFlow {
     this.sequence += 1;
   }
 
-  private currentStep(): IFlowStep {
+  private currentStep() {
     return this.steps[this.steps.length - 1];
   }
 }

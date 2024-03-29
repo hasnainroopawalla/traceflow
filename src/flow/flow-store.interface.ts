@@ -30,6 +30,11 @@ export type IFlowStore = {
    */
   findFlowById: (flowId: string) => Flow | undefined;
 
-  // Exported only for testing
+  /**
+   * Destroys all active flows.
+   *
+   * @remark
+   * Clears the entire FlowStore
+   */
   destroyAllFlows: () => void;
 };
