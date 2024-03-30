@@ -1,6 +1,6 @@
 {
   "name": "trackflow",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Track scenarios with precision using telemetry markers",
   "repository": "https://github.com/hasnainroopawalla/trackflow",
   "main": "dist/index.js",
