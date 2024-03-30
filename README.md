@@ -4,6 +4,8 @@
 
 ## 💡 Example scenario
 
+Check out the [Live demo](https://playcode.io/1819272) 🚀
+
 Assume we have an app where we need to track the submit button scenario.
 
 `SubmitButton` React component:
@@ -17,7 +19,9 @@ const SubmitButton: React.FC = () => {
   const onSubmit = () => {
     // start the submit_button_click Flow with a timeout of 5000 ms
     const flow = FlowStore.newFlow("submit_button_click", 5000);
-    fetchApi(flow);
+    fetchApi(flow).then(res => {
+      console.log(flow.info());
+    });
   } 
 
   return (
@@ -41,19 +45,19 @@ const fetchApi = (flow: Flow) => {
     requestType: "GET"
   });
 
-  fetch(url)
+  return fetch(url)
     .then(res => {
       // mark the successful network request
       flow.mark("api_fetch_complete");
 
-      parseResponse(res);
+      await parseResponse(res);
 
       // mark the parsing completed step with some step data
       flow.mark("response_parsed", {
         parseType: 2,
       });
 
-      render(parsedResponse);
+      await render(parsedResponse);
 
       // stop the Flow after the response has been rendered
       flow.stop({

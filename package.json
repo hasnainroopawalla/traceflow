@@ -8,7 +8,6 @@
   "scripts": {
     "build": "tsc",
     "prepare": "yarn build",
-    "prepublishOnly": "yarn lint",
     "publish:dry-run": "npm publish --dry-run",
     "test": "jest --config jestconfig.json",
     "test:watch": "jest --config jestconfig.json --watch",
