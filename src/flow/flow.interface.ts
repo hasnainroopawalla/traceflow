@@ -37,7 +37,7 @@ export type IFlow = {
    *
    * @remarks
    * Stops the Flow only if its active.
-   * @param data - [optional] data to append to the `stop` step
+   * @param data - [optional] Data to append to the `stop` step
    */
   stop: (data?: IFlowData) => void;
 
@@ -46,7 +46,7 @@ export type IFlow = {
    *
    * @remarks
    * Stops the Flow only if its active.
-   * @param data - [optional] data to append to the `fail` step
+   * @param data - [optional] Data to append to the `fail` step
    */
   fail: (data?: IFlowData) => void;
 
@@ -91,11 +91,11 @@ export type IFlow = {
   addFlowData: (flowData: IFlowData) => void;
 
   /**
-   * Returns an IFlow object containing all information about the Flow.
+   * Returns an IFlowInfo object containing all information about the Flow.
    *
    * @remarks
    * This method should ideally be called only for completed Flows.
-   * @returns The IFlow object
+   * @returns The IFlowInfo object
    */
   info: () => IFlowInfo;
 };

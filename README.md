@@ -149,37 +149,7 @@ $ yarn install
 ```
 
 ## 📄 Documentation
-## `trackflow.FlowStore`
-
-`FlowStore` is a centralized, singleton factory that stores all active Flows and provides the methods required to create/read them.
-
-### `trackflow.FlowStore.newFlow`
-```
-FlowStore.newFlow(flowName: string, timeoutInMs: number) -> Flow
-```
-
-- `flowName`: The name of the Flow
-- `timeoutInMs` - The timeout in milliseconds after which the Flow automatically times out
-
-Creates a new Flow and adds it to the FlowStore.
-
-### `trackflow.FlowStore.findFlowByName`
-```
-FlowStore.newFlow(flowName: string) => Flow | undefined
-```
-
-- `flowName`: The name of the Flow
-
-Finds a currently active Flow by its name and returns the most recent Flow if there are multiple active Flows with the same name.
-
-### `trackflow.FlowStore.findFlowById`
-```
-FlowStore.newFlow(flowId: string) => Flow | undefined
-```
-
-- `flowId`: The ID of the Flow
-
-Finds a currently active Flow by its ID.
+Check out the [wiki page](https://github.com/hasnainroopawalla/trackflow/wiki).
 
 ## ✏️ Contributing
 - Post any issues and suggestions on the GitHub [issues](https://github.com/hasnainroopawalla/trackflow/issues) page.
