@@ -1,4 +1,4 @@
-# trackflow 📈
+# Trackflow 📈
 
 `trackflow` is a lightweight package to track scenarios in an app using telemetry markers.
 
@@ -10,6 +10,7 @@ Assume we have an app where we need to track the submit button scenario.
 
 ```javascript
 import * as React from "react";
+import { FlowStore } from "trackflow";
 
 const SubmitButton: React.FC = () => {
 
@@ -128,9 +129,8 @@ Lets take a deeper look at the completed Flow using `flow.info()`:
       previousStep: "response_parsed",
     },
   ],
-};
+}
 ```
-
 
 ## 🏁 Getting started
 ```
@@ -149,8 +149,15 @@ $ yarn install
 ```
 
 ## 📄 Documentation
+### `trackflow.FlowStore`
 
+`FlowStore` is a centralized, singleton factory that stores all active `Flows` and provides the methods required to create/read them.
 
+### `trackflow.Flow`
+This is a Flow
+
+#### `Flow.fail`
+This method 
 ## ✏️ Contributing
 - Post any issues and suggestions on the GitHub [issues](https://github.com/hasnainroopawalla/trackflow/issues) page.
 - To contribute, fork the project and then create a pull request back to `master`.
