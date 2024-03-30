@@ -29,5 +29,5 @@ class FlowStoreFactory implements IFlowStore {
   }
 }
 
-// Exports a singleton instance of the FlowStore.
+// Export a singleton FlowStore instance.
 export const FlowStore: IFlowStore = new FlowStoreFactory();
