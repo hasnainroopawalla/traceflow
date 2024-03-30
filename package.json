@@ -22,7 +22,8 @@
     "typescript",
     "scenario",
     "marker",
-    "telemetry"
+    "telemetry",
+    "flow"
   ],
   "author": "Hasnain Roopawalla",
   "license": "MIT",

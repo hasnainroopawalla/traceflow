@@ -1,13 +1,11 @@
-name: Build and Test
+name: Release
 on:
-  pull_request:
-    branches:
-      - master
+  release:
+    types: [published]
 
 jobs:
-  lint-build-test:
+  build-release:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -23,3 +21,5 @@ jobs:
         run: yarn build
       - name: Test
         run: yarn test
+      - name: Publish
+        run: npm publish
