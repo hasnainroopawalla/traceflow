@@ -69,7 +69,7 @@ const fetchApi = (flow: Flow) => {
 ```
 
 Lets take a deeper look at the completed Flow using `flow.info()`:
-```javascript
+```yaml
 {
   id: "082d691f-40a3-4821-b538-a47b6b07b119",
   name: "submit_button_click",
