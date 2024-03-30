@@ -35,7 +35,7 @@ export class Flow implements IFlow {
       data: this.flowData,
       delta,
       startedAt: this.timer.startedAt,
-      finishedAt: !this.isActive ? undefined : timestamp,
+      finishedAt: !this.isActive ? timestamp : undefined,
       status: this.isActive ? undefined : status,
     };
   }
