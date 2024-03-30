@@ -1,10 +1,10 @@
-export enum ScenarioStatus {
+export enum FlowStatus {
   Success = "success",
   Timeout = "timeout",
   Failure = "failure",
 }
 
-export enum ScenarioStep {
+export enum FlowStep {
   Start = "start",
   Stop = "stop",
   Pause = "pause",

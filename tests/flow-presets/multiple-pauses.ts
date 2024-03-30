@@ -1,30 +1,32 @@
-import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
+import { Flow, FlowStatus, FlowStep } from "../../src";
 import { sleep } from "../test-utils";
 
-export const resumeBeforePause = {
-  name: "resume-before-pause",
+export const multiplePauses = {
+  name: "multiple-pauses",
   data: {},
-  status: ScenarioStatus.Success,
-  run: (scenario: Scenario) => {
+  status: FlowStatus.Success,
+  run: (flow: Flow) => {
     sleep(400);
-    scenario.mark("step_1");
-    scenario.resume();
+    flow.mark("step_1");
     sleep(700);
-    scenario.pause();
+    flow.pause();
+    flow.pause();
+    flow.pause();
+    flow.pause();
     sleep(1000);
-    scenario.resume();
+    flow.resume();
     sleep(300);
-    scenario.mark("step_2");
+    flow.mark("step_2");
     sleep(200);
-    scenario.stop();
+    flow.stop();
   },
   expectedSteps: [
     {
-      step: ScenarioStep.Start,
+      step: FlowStep.Start,
       delta: 0,
       stepDelta: 0,
       sequence: 1,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "",
       data: {},
     },
@@ -33,16 +35,16 @@ export const resumeBeforePause = {
       delta: 400,
       stepDelta: 400,
       sequence: 2,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "start",
       data: {},
     },
     {
-      step: ScenarioStep.Pause,
+      step: FlowStep.Pause,
       delta: 1100,
       stepDelta: 1000,
       sequence: 3,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_1",
       data: {},
     },
@@ -51,16 +53,16 @@ export const resumeBeforePause = {
       delta: 1400,
       stepDelta: 300,
       sequence: 4,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "pause",
       data: {},
     },
     {
-      step: ScenarioStep.Stop,
+      step: FlowStep.Stop,
       delta: 1600,
       stepDelta: 200,
       sequence: 5,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_2",
       data: {},
     },

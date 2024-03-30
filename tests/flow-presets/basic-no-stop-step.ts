@@ -1,24 +1,24 @@
-import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
+import { Flow, FlowStatus, FlowStep } from "../../src";
 import { sleep } from "../test-utils";
 
 export const basicNoStopStep = {
   name: "basic-no-stop-step",
   data: {},
-  status: ScenarioStatus.Timeout,
-  run: (scenario: Scenario) => {
+  status: FlowStatus.Timeout,
+  run: (flow: Flow) => {
     sleep(500);
-    scenario.mark("step_1");
+    flow.mark("step_1");
     sleep(700);
-    scenario.mark("step_2");
+    flow.mark("step_2");
     sleep(5000);
   },
   expectedSteps: [
     {
-      step: ScenarioStep.Start,
+      step: FlowStep.Start,
       delta: 0,
       stepDelta: 0,
       sequence: 1,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "",
       data: {},
     },
@@ -27,7 +27,7 @@ export const basicNoStopStep = {
       delta: 500,
       stepDelta: 500,
       sequence: 2,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "start",
       data: {},
     },
@@ -36,16 +36,16 @@ export const basicNoStopStep = {
       delta: 1200,
       stepDelta: 700,
       sequence: 3,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_1",
       data: {},
     },
     {
-      step: ScenarioStep.Stop,
+      step: FlowStep.Stop,
       delta: 3000,
       stepDelta: 1800,
       sequence: 4,
-      status: ScenarioStatus.Timeout,
+      status: FlowStatus.Timeout,
       previousStep: "step_2",
       data: {},
     },

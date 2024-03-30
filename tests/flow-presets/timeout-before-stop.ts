@@ -1,25 +1,25 @@
-import { Scenario, ScenarioStatus, ScenarioStep } from "../../src/scenario";
+import { Flow, FlowStatus, FlowStep } from "../../src";
 import { sleep } from "../test-utils";
 
 export const timeoutBeforeStop = {
   name: "timeout-before-stop",
   data: {},
-  status: ScenarioStatus.Timeout,
-  run: (scenario: Scenario) => {
+  status: FlowStatus.Timeout,
+  run: (flow: Flow) => {
     sleep(200);
-    scenario.mark("step_1");
+    flow.mark("step_1");
     sleep(1300);
-    scenario.mark("step_2");
+    flow.mark("step_2");
     sleep(4000);
-    scenario.stop();
+    flow.stop();
   },
   expectedSteps: [
     {
-      step: ScenarioStep.Start,
+      step: FlowStep.Start,
       delta: 0,
       stepDelta: 0,
       sequence: 1,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "",
       data: {},
     },
@@ -28,7 +28,7 @@ export const timeoutBeforeStop = {
       delta: 200,
       stepDelta: 200,
       sequence: 2,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "start",
       data: {},
     },
@@ -37,16 +37,16 @@ export const timeoutBeforeStop = {
       delta: 1500,
       stepDelta: 1300,
       sequence: 3,
-      status: ScenarioStatus.Success,
+      status: FlowStatus.Success,
       previousStep: "step_1",
       data: {},
     },
     {
-      step: ScenarioStep.Stop,
+      step: FlowStep.Stop,
       delta: 3000,
       stepDelta: 1500,
       sequence: 4,
-      status: ScenarioStatus.Timeout,
+      status: FlowStatus.Timeout,
       previousStep: "step_2",
       data: {},
     },

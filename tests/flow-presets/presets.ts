@@ -1,8 +1,4 @@
-import {
-  type IScenarioStep,
-  Scenario,
-  ScenarioStatus,
-} from "../../src/scenario";
+import { type IFlowStep, Flow, FlowStatus } from "../../src";
 import { basicSuccess } from "./basic-success";
 import { basicFailure } from "./basic-failure";
 import { singlePause } from "./single-pause";
@@ -19,15 +15,15 @@ import { multiplePauses } from "./multiple-pauses";
 import { resumeBeforePause } from "./resume-before-pause";
 import { stopDuringPause } from "./stop-during-pause";
 
-type IScenarioPreset = {
-  run: (scenario: Scenario) => void;
+type IFlowPreset = {
+  run: (flow: Flow) => void;
   name: string;
   data: { [key: string]: unknown };
-  status: ScenarioStatus;
-  expectedSteps: Omit<IScenarioStep, "timestamp">[];
+  status: FlowStatus;
+  expectedSteps: Omit<IFlowStep, "timestamp">[];
 };
 
-export const scenarioPresets: IScenarioPreset[] = [
+export const flowPresets: IFlowPreset[] = [
   noSteps,
   noStepsTimeout,
   basicSuccess,

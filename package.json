@@ -1,13 +1,14 @@
 {
   "name": "trackflow",
-  "version": "0.1.1",
-  "description": "Track app scenarios with precision using telemetry markers",
+  "version": "0.2.1",
+  "description": "Track scenarios with precision using telemetry markers",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "prepare": "yarn build",
     "prepublishOnly": "yarn lint",
+    "publish:dry-run": "npm publish --dry-run",
     "test": "jest --config jestconfig.json",
     "test:watch": "jest --config jestconfig.json --watch",
     "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\""
@@ -21,7 +22,8 @@
     "typescript",
     "scenario",
     "marker",
-    "telemetry"
+    "telemetry",
+    "flow"
   ],
   "author": "Hasnain Roopawalla",
   "license": "MIT",
