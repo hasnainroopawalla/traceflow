@@ -1,7 +1,8 @@
 {
   "name": "trackflow",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Track scenarios with precision using telemetry markers",
+  "repository": "https://github.com/hasnainroopawalla/trackflow",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
