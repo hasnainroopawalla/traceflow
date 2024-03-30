@@ -1,6 +1,6 @@
 {
   "name": "trackflow",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Track scenarios with precision using telemetry markers",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,8 @@
     "publish:dry-run": "npm publish --dry-run",
     "test": "jest --config jestconfig.json",
     "test:watch": "jest --config jestconfig.json --watch",
-    "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\""
+    "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
+    "postpublish": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags"
   },
   "files": [
     "dist",
