@@ -3,9 +3,10 @@ import { Flow } from "./flow";
 export type IFlowStore = {
   /**
    * Creates a new Flow and adds it to the FlowStore.
+   *
    * @remarks
    * Each Flow has a unique generated ID.
-   * @param flowName - The name of the Flow/scenario
+   * @param flowName - The name of the Flow
    * @param timeoutInMs - The timeout in milliseconds after which the Flow automatically times out
    * @returns The created Flow object
    */
@@ -16,7 +17,7 @@ export type IFlowStore = {
    *
    * @remarks
    * Returns the most recent Flow if there are multiple active Flows with the same name
-   * @param flowName - The name of the Flow/scenario
+   * @param flowName - The name of the Flow
    * @param timeoutInMs - The timeout in milliseconds after which the Flow automatically times out
    * @returns The Flow object if it exists and is active
    */
@@ -25,7 +26,7 @@ export type IFlowStore = {
   /**
    * Finds a currently active Flow by its ID.
    *
-   * @param flowId - The ID of the Flow/scenario
+   * @param flowId - The ID of the Flow
    * @returns The Flow object if it exists and is active
    */
   findFlowById: (flowId: string) => Flow | undefined;
