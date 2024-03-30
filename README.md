@@ -153,7 +153,7 @@ $ yarn install
 
 `FlowStore` is a centralized, singleton factory that stores all active Flows and provides the methods required to create/read them.
 
-### `trackflow#FlowStore.newFlow`
+### `trackflow.FlowStore.newFlow`
 ```
 FlowStore.newFlow(flowName: string, timeoutInMs: number) -> Flow
 ```
