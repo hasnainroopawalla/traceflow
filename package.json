@@ -11,7 +11,8 @@
     "publish:dry-run": "npm publish --dry-run",
     "test": "jest --config jestconfig.json",
     "test:watch": "jest --config jestconfig.json --watch",
-    "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\""
+    "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
+    "createTag": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag v$PACKAGE_VERSION && git push --tags"
   },
   "files": [
     "dist",
